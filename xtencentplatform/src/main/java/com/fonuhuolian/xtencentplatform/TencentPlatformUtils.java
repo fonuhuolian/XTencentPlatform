@@ -8,7 +8,6 @@ import android.os.Bundle;
 import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
-import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 
 import java.util.ArrayList;
@@ -25,6 +24,14 @@ public class TencentPlatformUtils {
         APP_ID_QQ = QQ_APP_ID;
     }
 
+
+    // TODO QQ在onActivityResult调用此方法
+    public static void onQQResult(int requestCode, int resultCode, Intent data, IQQListener listener) {
+        if (requestCode == Constants.REQUEST_LOGIN) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, listener);
+        }
+    }
+
     // TODO QQ登录方法
     public static void onQQLogin(Activity activity, IQQListener listener) {
         Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
@@ -34,16 +41,8 @@ public class TencentPlatformUtils {
     }
 
 
-    // TODO QQ登录在onActivityResult调用此方法
-    public static void onQQLoginResult(int requestCode, int resultCode, Intent data, IQQListener listener) {
-        if (requestCode == Constants.REQUEST_LOGIN) {
-            Tencent.onActivityResultData(requestCode, resultCode, data, listener);
-        }
-    }
-
-
     // TODO 图文分享
-    public static void onShareImageAndText(Activity activity, IUiListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
+    public static void onQQShareImageAndText(Activity activity, IQQListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
 
         Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
 

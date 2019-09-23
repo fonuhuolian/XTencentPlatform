@@ -16,7 +16,7 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XTencentPlatform:0.0.8'
+implementation 'com.github.fonuhuolian:XTencentPlatform:0.0.9'
 ```
 
 > 混淆
