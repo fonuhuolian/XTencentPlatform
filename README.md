@@ -16,7 +16,7 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XTencentPlatform:0.0.5'
+implementation 'com.github.fonuhuolian:XTencentPlatform:0.0.6'
 ```
 
 > 混淆
@@ -48,4 +48,40 @@ TencentPlatformUtils.init(this,"QQ_APP_ID");
           </intent-filter>
      </activity>
 <application>
+```
+QQ登录
+```
+
+private IUiListener iUiListener;
+
+iUiListener = new IUiListener() {
+    @Override
+    public void onComplete(Object o) {
+
+    }
+
+    @Override
+    public void onError(UiError uiError) {
+
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
+};
+
+loginQq.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        TencentPlatformUtils.onQQLogin(mActivity, iUiListener);
+    }
+});
+```
+```
+ @Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    TencentPlatformUtils.onQQLoginResult(requestCode, resultCode, data, iUiListener);
+    super.onActivityResult(requestCode, resultCode, data);
+}
 ```

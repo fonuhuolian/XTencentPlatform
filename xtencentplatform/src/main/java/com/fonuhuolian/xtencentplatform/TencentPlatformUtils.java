@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Intent;
 
 import com.tencent.connect.common.Constants;
-import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 
 public class TencentPlatformUtils {
@@ -20,7 +19,7 @@ public class TencentPlatformUtils {
     }
 
     // TODO QQ登录方法
-    public static void onQQLogin(Activity activity, IUiListener listener) {
+    public static void onQQLogin(Activity activity, IQQListener listener) {
         Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
         if (!mTencent.isSessionValid()) {
             mTencent.login(activity, "all", listener);
@@ -29,7 +28,7 @@ public class TencentPlatformUtils {
 
 
     // TODO QQ登录在onActivityResult调用此方法
-    public static void onQQLoginResult(int requestCode, int resultCode, Intent data, IUiListener listener) {
+    public static void onQQLoginResult(int requestCode, int resultCode, Intent data, IQQListener listener) {
         if (requestCode == Constants.REQUEST_LOGIN) {
             Tencent.onActivityResultData(requestCode, resultCode, data, listener);
         }
