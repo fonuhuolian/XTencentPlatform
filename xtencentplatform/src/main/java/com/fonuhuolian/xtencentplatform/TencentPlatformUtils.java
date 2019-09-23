@@ -3,9 +3,16 @@ package com.fonuhuolian.xtencentplatform;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.tencent.connect.common.Constants;
+import com.tencent.connect.share.QQShare;
+import com.tencent.connect.share.QzoneShare;
+import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class TencentPlatformUtils {
 
@@ -35,22 +42,46 @@ public class TencentPlatformUtils {
     }
 
 
-//    private void onShareImageAndText(QQType type,) {
-//        final Bundle params = new Bundle();
-//
-//        if (type == QQType.QQ){
-//            params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-//        }else if (type == QQType.QZONE){
-//            params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
-//        }
-//
-//
-//        params.putString(QQShare.SHARE_TO_QQ_TITLE, "要分享的标题");
-//        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");
-//        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");
-//        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");
-//        params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "测试应用222222");
-//        params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, "其他附加功能");
-//        mTencent.shareToQQ(MainActivity.this, params, new BaseUiListener());
-//    }
+    // TODO 图文分享
+    private void onShareImageAndText(Activity activity, IUiListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
+
+        Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
+
+        final Bundle params = new Bundle();
+
+        if (type == QQType.QQ) {
+            params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+            // 这条分享消息被好友点击后跳转URL（必填）
+            params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, targetUrl);
+            // 分享的标题，最长30个字符（必填）
+            params.putString(QQShare.SHARE_TO_QQ_TITLE, title);
+
+            // 摘要 （选填）
+            params.putString(QQShare.SHARE_TO_QQ_SUMMARY, summary);
+            // 分享的图片 （选填）
+            if (imageUrls != null && imageUrls.length > 0) {
+                params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, imageUrls[0]);
+            }
+
+            mTencent.shareToQQ(activity, params, listener);
+
+        } else if (type == QQType.QZONE) {
+            params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
+            // 分享的标题，最长30个字符（必填）
+            params.putString(QzoneShare.SHARE_TO_QQ_TITLE, title);
+            // 这条分享消息被好友点击后跳转URL（必填）
+            params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, targetUrl);
+
+            // 摘要 （选填）
+            params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, summary);
+            // 分享的图片 （选填）
+            if (imageUrls != null && imageUrls.length > 0) {
+                ArrayList<String> arraylist = new ArrayList<>();
+                Collections.addAll(arraylist, imageUrls);
+                params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, arraylist);
+            }
+
+            mTencent.shareToQzone(activity, params, listener);
+        }
+    }
 }
