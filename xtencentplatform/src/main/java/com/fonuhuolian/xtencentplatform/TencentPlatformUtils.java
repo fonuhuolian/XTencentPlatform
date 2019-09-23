@@ -29,7 +29,7 @@ public class TencentPlatformUtils {
 
 
     // TODO QQ登录在onActivityResult调用此方法
-    public void onQQLoginResult(int requestCode, int resultCode, Intent data, IUiListener listener) {
+    public static void onQQLoginResult(int requestCode, int resultCode, Intent data, IUiListener listener) {
         if (requestCode == Constants.REQUEST_LOGIN) {
             Tencent.onActivityResultData(requestCode, resultCode, data, listener);
         }
