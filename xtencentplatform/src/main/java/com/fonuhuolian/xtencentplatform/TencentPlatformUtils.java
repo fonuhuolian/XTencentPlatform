@@ -43,7 +43,7 @@ public class TencentPlatformUtils {
 
 
     // TODO 图文分享
-    private void onShareImageAndText(Activity activity, IUiListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
+    public static void onShareImageAndText(Activity activity, IUiListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
 
         Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
 
