@@ -20,10 +20,10 @@ public class TencentPlatformUtils {
     }
 
     // TODO QQ登录方法
-    public static void onQQLogin(Activity activity, String Scope, IUiListener listener) {
+    public static void onQQLogin(Activity activity, IUiListener listener) {
         Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
         if (!mTencent.isSessionValid()) {
-            mTencent.login(activity, Scope, listener);
+            mTencent.login(activity, "all", listener);
         }
     }
 
