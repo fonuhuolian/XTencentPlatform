@@ -42,6 +42,8 @@ public class TencentPlatformUtils {
 
 
     // TODO 图文分享
+    // QQ 分享 必填 链接、title 且不能为空
+    // QQ空间 分享 必填 链接、title、至少一张图片 且不能为空
     public static void onQQShareImageAndText(Activity activity, IQQListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
 
         Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
