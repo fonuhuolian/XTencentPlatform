@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.fonuhuolian.xtencentplatform.net.WechatToken;
 import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import java.util.ArrayList;
@@ -16,12 +21,60 @@ import java.util.Collections;
 public class TencentPlatformUtils {
 
     private static String APP_ID_QQ;
+    private static String APP_ID_WECHAT;
+    private static String APP_SECRET_WECHAT;
     private static Application mContext;
 
     // 需要在Application进行全局初始化
-    public static void init(Application context, String QQ_APP_ID) {
+    public static void init(Application context, String QQ_APP_ID, String WECHAT_APP_ID, String WECHAT_APP_SECRET) {
         mContext = context;
         APP_ID_QQ = QQ_APP_ID;
+        APP_ID_WECHAT = WECHAT_APP_ID;
+        APP_SECRET_WECHAT = WECHAT_APP_SECRET;
+    }
+
+
+    // TODO 微信登录方法
+    public static void onWechatLogin(Activity activity, IQQListener listener) {
+
+        // 将该app注册到微信
+        final IWXAPI wxapi = WXAPIFactory.createWXAPI(activity, APP_ID_WECHAT);
+
+        if (!wxapi.isWXAppInstalled()) {
+            Toast.makeText(activity, "您尚未安装微信客户端", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo_test";
+        wxapi.sendReq(req);
+
+    }
+
+
+    // TODO 微信登录方法
+    public static void onWechatLoginResult(Activity activity, String code, IWechaListener listener) {
+
+
+        String tokenUrl = " https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + APP_ID_WECHAT + "&secret=" +
+                APP_SECRET_WECHAT + "&code=" + code + "&grant_type=authorization_code";
+
+        new WechatToken(listener, APP_ID_WECHAT).execute(tokenUrl);
+
+        // 将该app注册到微信
+        final IWXAPI wxapi = WXAPIFactory.createWXAPI(activity, APP_ID_WECHAT);
+
+        if (!wxapi.isWXAppInstalled()) {
+            Toast.makeText(activity, "您尚未安装微信客户端", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo_test";
+        wxapi.sendReq(req);
+
     }
 
 
