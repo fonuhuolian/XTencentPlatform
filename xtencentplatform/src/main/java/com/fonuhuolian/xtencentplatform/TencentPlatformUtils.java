@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.fonuhuolian.xtencentplatform.net.QQUserInfo;
+import com.fonuhuolian.xtencentplatform.net.QQUserInfoAsync;
 import com.fonuhuolian.xtencentplatform.net.WechatTokenAsync;
 import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
@@ -61,15 +61,15 @@ public class TencentPlatformUtils {
         String tokenUrl = " https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + APP_ID_WECHAT + "&secret=" +
                 APP_SECRET_WECHAT + "&code=" + code + "&grant_type=authorization_code";
 
-        new WechatTokenAsync(listener, APP_ID_WECHAT).execute(tokenUrl);
+        new WechatTokenAsync(listener).execute(tokenUrl);
     }
 
 
-    public static void getQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQuserListener listener) {
+    public static void getQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
 
         String url = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + APP_ID_QQ + "&openid=" + OPENID;
 
-        new QQUserInfo(listener).execute(url);
+        new QQUserInfoAsync(listener).execute(url);
     }
 
 

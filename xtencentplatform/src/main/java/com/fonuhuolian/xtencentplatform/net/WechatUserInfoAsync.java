@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.fonuhuolian.xtencentplatform.IWechaListener;
-import com.fonuhuolian.xtencentplatform.WechatLoginResp;
+import com.fonuhuolian.xtencentplatform.bean.WechatUserInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +17,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO 获取用户信息
+ */
 public class WechatUserInfoAsync extends AsyncTask<String, Integer, String> {
 
     private IWechaListener listener;
@@ -63,44 +66,51 @@ public class WechatUserInfoAsync extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        if (listener != null)
-            listener.onToken(result);
-
-        String errmsg = "";
-
         try {
+
+            // 转换成jsonObject
             JSONObject jsonObject = new JSONObject(result);
-            int sex = jsonObject.getInt("sex");
-            String openid = jsonObject.getString("openid");
-            String nickname = jsonObject.getString("nickname");
-            String province = jsonObject.getString("province");
-            String city = jsonObject.getString("city");
-            String country = jsonObject.getString("country");
-            String headimgurl = jsonObject.getString("headimgurl");
-            String unionid = jsonObject.getString("unionid");
-            JSONArray privilege = jsonObject.getJSONArray("privilege");
 
-            errmsg = jsonObject.getString("errmsg");
-            int errcode = jsonObject.getInt("errcode");
+            // 获取成功的信息
+            String openid = jsonObject.optString("openid", "");
+            String nickname = jsonObject.optString("nickname", "");
+            int sex = jsonObject.optInt("sex", 1);
+            String language = jsonObject.optString("language", "");
+            String city = jsonObject.optString("city", "");
+            String province = jsonObject.optString("province", "");
+            String country = jsonObject.optString("country", "");
+            String headimgurl = jsonObject.optString("headimgurl", "");
+            String unionid = jsonObject.optString("unionid", "");
+            JSONArray privilege = jsonObject.optJSONArray("privilege");
 
+            // 获取错误信息
+            String errmsg = jsonObject.optString("errmsg", "");
 
             if (TextUtils.isEmpty(errmsg)) {
 
                 List<String> privilegeList = new ArrayList<String>();
 
+                try {
 
-                if (privilege != null && privilege.length() > 0) {
+                    if (privilege != null && privilege.length() > 0) {
 
-                    for (int i = 0; i < privilege.length(); i++) {
-                        String s = (String) privilege.get(i);
-                        privilegeList.add(s);
+                        for (int i = 0; i < privilege.length(); i++) {
+                            Object o = privilege.get(i);
+                            if (o != null) {
+                                privilegeList.add((String) o);
+                            }
+                        }
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-                WechatLoginResp loginResp = new WechatLoginResp(openid, nickname, sex, province, city, country, headimgurl, unionid, privilegeList);
+                WechatUserInfo wechatUserInfo = new WechatUserInfo(
+                        openid, nickname, sex, language, city, province, country, headimgurl, unionid, privilegeList);
 
                 if (listener != null)
-                    listener.onSuccess(loginResp);
+                    listener.onSuccess(wechatUserInfo);
 
             } else {
 
@@ -110,7 +120,8 @@ public class WechatUserInfoAsync extends AsyncTask<String, Integer, String> {
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            if (listener != null)
+                listener.onFail("获取微信用户信息时，转换json字符串发生异常");
         }
     }
 }
