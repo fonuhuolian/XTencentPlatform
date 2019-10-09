@@ -67,7 +67,7 @@ public class TencentPlatformUtils {
 
     public static void getQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
 
-        String url = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + APP_ID_QQ + "&openid=" + OPENID;
+        String url = "https://graph.qq.com/user/get_user_info?access_token=1" + ACCESS_TOKEN + "&oauth_consumer_key=" + APP_ID_QQ + "&openid=" + OPENID;
 
         new QQUserInfoAsync(listener).execute(url);
     }
