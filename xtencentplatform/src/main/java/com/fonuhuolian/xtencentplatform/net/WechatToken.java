@@ -2,6 +2,7 @@ package com.fonuhuolian.xtencentplatform.net;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.fonuhuolian.xtencentplatform.IWechaListener;
 
@@ -67,6 +68,7 @@ public class WechatToken extends AsyncTask<String, Integer, String> {
         String errmsg = "";
 
         try {
+            Log.e("Ddd","onPostExecute");
             JSONObject jsonObject = new JSONObject(result);
             int expires_in = jsonObject.getInt("expires_in");
             String access_token = jsonObject.getString("access_token");
@@ -77,9 +79,12 @@ public class WechatToken extends AsyncTask<String, Integer, String> {
             int errcode = jsonObject.getInt("errcode");
             errmsg = jsonObject.getString("errmsg");
 
+            Log.e("Ddd","onPostExecute"+errmsg);
+
             if (!TextUtils.isEmpty(errmsg)) {
                 String userInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid;
                 new WechatUserInfo(listener).execute(userInfo);
+                Log.e("Ddd","onPostExecute"+userInfo);
             } else {
                 if (listener != null)
                     listener.onFail(errmsg);
