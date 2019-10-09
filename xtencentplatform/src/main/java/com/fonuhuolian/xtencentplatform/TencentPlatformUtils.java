@@ -62,20 +62,6 @@ public class TencentPlatformUtils {
                 APP_SECRET_WECHAT + "&code=" + code + "&grant_type=authorization_code";
 
         new WechatToken(listener, APP_ID_WECHAT).execute(tokenUrl);
-
-        // 将该app注册到微信
-        final IWXAPI wxapi = WXAPIFactory.createWXAPI(activity, APP_ID_WECHAT);
-
-        if (!wxapi.isWXAppInstalled()) {
-            Toast.makeText(activity, "您尚未安装微信客户端", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "wechat_sdk_demo_test";
-        wxapi.sendReq(req);
-
     }
 
 
