@@ -5,16 +5,16 @@ import java.util.List;
 public class WechatUserInfo {
 
     /**
-     * openid : o8-WlwgsFZO_mHXOU_Y8Tpw95teM
+     * openid : o8-WlwgsFZO
      * nickname : Qi
      * sex : 1
      * language : zh_CN
      * city :
      * province :
      * country : CR
-     * headimgurl : http://thirdwx.qlogo.cn/mmopen/vi_32/zcsuWTsw9kQok6UQZn9UgrEbXpj7kUdQntI40kbS5QAiaQiashL9b2MzT3USBUlTWYpTVuD5MvgleDS5LglQkhUw/132
+     * headimgurl : http://thirdwx.qlogo.cn/mmopen/vi_32/zcsuWTsw9I40kbS5QAiaQiashL9b2MzT3USBUlTWYpTVuD5MvgleDS5LglQkhUw/132
      * privilege : []
-     * unionid : od4u51d5avqyMeskHlcBz0GpEU6k
+     * unionid : od4u51d5avqyEU6k
      */
 
     // 普通用户的标识，对当前开发者帐号唯一
