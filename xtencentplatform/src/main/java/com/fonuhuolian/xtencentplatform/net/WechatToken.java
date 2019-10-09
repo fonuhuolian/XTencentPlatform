@@ -68,25 +68,29 @@ public class WechatToken extends AsyncTask<String, Integer, String> {
         String errmsg = "";
 
         try {
-            Log.e("Ddd","onPostExecute");
+            Log.e("Ddd", "onPostExecute");
             JSONObject jsonObject = new JSONObject(result);
+            Log.e("Ddd", "jsonObject" + jsonObject.toString());
             String access_token = jsonObject.getString("access_token");
+            Log.e("Ddd", "access_token" + access_token);
             String openid = jsonObject.getString("openid");
+            Log.e("Ddd", "openid" + openid);
             errmsg = jsonObject.getString("errmsg");
 
-            Log.e("Ddd","onPostExecute"+errmsg);
+            Log.e("Ddd", "errmsg" + errmsg);
 
             if (TextUtils.isEmpty(errmsg)) {
                 String userInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid;
                 new WechatUserInfo(listener).execute(userInfo);
-                Log.e("Ddd","onPostExecute"+userInfo);
+                Log.e("Ddd", "onPostExecute" + userInfo);
             } else {
                 if (listener != null)
                     listener.onFail(errmsg);
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            if (listener != null)
+                listener.onFail(e.getCause().toString());
         }
     }
 }
