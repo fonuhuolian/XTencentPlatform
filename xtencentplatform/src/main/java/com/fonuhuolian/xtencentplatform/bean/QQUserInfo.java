@@ -1,0 +1,163 @@
+package com.fonuhuolian.xtencentplatform.bean;
+
+import android.text.TextUtils;
+
+/**
+ * QQ登录的用户信息
+ */
+public class QQUserInfo {
+
+    /**
+     * ret : 0
+     * msg :
+     * is_lost : 0
+     * nickname :
+     * gender : 男
+     * province :
+     * city :
+     * year : 1988
+     * constellation :
+     * figureurl : http://qzapp.qlogo.cn/qzapp/101795546/69A7A3BFAEC9EE547B3499C36494ED60/30
+     * figureurl_1 : http://qzapp.qlogo.cn/qzapp/101795546/69A7A3BFAEC9EE547B3499C36494ED60/50
+     * figureurl_2 : http://qzapp.qlogo.cn/qzapp/101795546/69A7A3BFAEC9EE547B3499C36494ED60/100
+     * figureurl_qq_1 : http://thirdqq.qlogo.cn/g?b=oidb&k=OobC0jDNOMdobzKGZ5rMfQ&s=40&t=1555297882
+     * figureurl_qq_2 : http://thirdqq.qlogo.cn/g?b=oidb&k=OobC0jDNOMdobzKGZ5rMfQ&s=100&t=1555297882
+     * figureurl_qq : http://thirdqq.qlogo.cn/g?b=oidb&k=OobC0jDNOMdobzKGZ5rMfQ&s=140&t=1555297882
+     * figureurl_type : 1
+     * is_yellow_vip : 0
+     * vip : 0
+     * yellow_vip_level : 0
+     * level : 0
+     * is_yellow_year_vip : 0
+     */
+
+    private int ret;
+    private String msg;
+    private int is_lost;
+    private String nickname;
+    private String gender;
+    private String province;
+    private String city;
+    private String year;
+    private String constellation;
+    private String figureurl;
+    private String figureurl_1;
+    private String figureurl_2;
+    private String figureurl_qq_1;
+    private String figureurl_qq_2;
+    private String figureurl_qq;
+    private String figureurl_type;
+    private String is_yellow_vip;
+    private String vip;
+    private String yellow_vip_level;
+    private String level;
+    private String is_yellow_year_vip;
+
+    public QQUserInfo(int ret, String msg, int is_lost, String nickname, String gender, String province, String city, String year, String constellation, String figureurl, String figureurl_1, String figureurl_2, String figureurl_qq_1, String figureurl_qq_2, String figureurl_qq, String figureurl_type, String is_yellow_vip, String vip, String yellow_vip_level, String level, String is_yellow_year_vip) {
+        this.ret = ret;
+        this.msg = msg;
+        this.is_lost = is_lost;
+        this.nickname = nickname;
+        this.gender = gender;
+        this.province = province;
+        this.city = city;
+        this.year = year;
+        this.constellation = constellation;
+        this.figureurl = figureurl;
+        this.figureurl_1 = figureurl_1;
+        this.figureurl_2 = figureurl_2;
+        this.figureurl_qq_1 = figureurl_qq_1;
+        this.figureurl_qq_2 = figureurl_qq_2;
+        this.figureurl_qq = figureurl_qq;
+        this.figureurl_type = figureurl_type;
+        this.is_yellow_vip = is_yellow_vip;
+        this.vip = vip;
+        this.yellow_vip_level = yellow_vip_level;
+        this.level = level;
+        this.is_yellow_year_vip = is_yellow_year_vip;
+    }
+
+    public int getRet() {
+        return ret;
+    }
+
+    public String getMsg() {
+        return TextUtils.isEmpty(msg) ? "" : msg;
+    }
+
+    public int getIs_lost() {
+        return is_lost;
+    }
+
+    public String getNickname() {
+        return TextUtils.isEmpty(nickname) ? "" : nickname;
+    }
+
+    public String getGender() {
+        return TextUtils.isEmpty(gender) ? "男" : gender;
+    }
+
+    public String getProvince() {
+        return TextUtils.isEmpty(province) ? "" : province;
+    }
+
+    public String getCity() {
+        return TextUtils.isEmpty(city) ? "" : city;
+    }
+
+    public String getYear() {
+        return TextUtils.isEmpty(year) ? "0" : year;
+    }
+
+    public String getConstellation() {
+        return TextUtils.isEmpty(constellation) ? "" : constellation;
+    }
+
+    public String getFigureurl() {
+        return figureurl;
+    }
+
+    public String getFigureurl_1() {
+        return figureurl_1;
+    }
+
+    public String getFigureurl_2() {
+        return figureurl_2;
+    }
+
+    public String getFigureurl_qq_1() {
+        return figureurl_qq_1;
+    }
+
+    public String getFigureurl_qq_2() {
+        return figureurl_qq_2;
+    }
+
+    public String getFigureurl_qq() {
+        return figureurl_qq;
+    }
+
+    public String getFigureurl_type() {
+        return TextUtils.isEmpty(figureurl_type) ? "0" : figureurl_type;
+    }
+
+    public String getIs_yellow_vip() {
+        return TextUtils.isEmpty(is_yellow_vip) ? "0" : is_yellow_vip;
+    }
+
+    public String getVip() {
+        return TextUtils.isEmpty(vip) ? "0" : vip;
+    }
+
+    public String getYellow_vip_level() {
+        return TextUtils.isEmpty(yellow_vip_level) ? "0" : yellow_vip_level;
+    }
+
+    public String getLevel() {
+        return TextUtils.isEmpty(level) ? "0" : level;
+    }
+
+    public String getIs_yellow_year_vip() {
+        return TextUtils.isEmpty(is_yellow_year_vip) ? "0" : is_yellow_year_vip;
+    }
+}
