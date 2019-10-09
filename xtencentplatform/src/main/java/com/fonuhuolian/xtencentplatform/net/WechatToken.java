@@ -71,6 +71,7 @@ public class WechatToken extends AsyncTask<String, Integer, String> {
             Log.e("Ddd","onPostExecute");
             JSONObject jsonObject = new JSONObject(result);
             String access_token = jsonObject.getString("access_token");
+            String openid = jsonObject.getString("openid");
             errmsg = jsonObject.getString("errmsg");
 
             Log.e("Ddd","onPostExecute"+errmsg);
