@@ -70,13 +70,7 @@ public class WechatToken extends AsyncTask<String, Integer, String> {
         try {
             Log.e("Ddd","onPostExecute");
             JSONObject jsonObject = new JSONObject(result);
-            int expires_in = jsonObject.getInt("expires_in");
             String access_token = jsonObject.getString("access_token");
-            String refresh_token = jsonObject.getString("refresh_token");
-            String openid = jsonObject.getString("openid");
-            String scope = jsonObject.getString("scope");
-            String unionid = jsonObject.getString("unionid");
-            int errcode = jsonObject.getInt("errcode");
             errmsg = jsonObject.getString("errmsg");
 
             Log.e("Ddd","onPostExecute"+errmsg);
