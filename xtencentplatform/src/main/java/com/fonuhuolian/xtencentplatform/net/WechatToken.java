@@ -65,7 +65,7 @@ public class WechatToken extends AsyncTask<String, Integer, String> {
         if (listener != null)
             listener.onToken(result);
 
-        String errmsg = "";
+        String errmsg;
 
         try {
             Log.e("Ddd", "onPostExecute");
