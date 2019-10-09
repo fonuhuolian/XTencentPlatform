@@ -1,9 +1,9 @@
 package com.fonuhuolian.xtencentplatform.net;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.fonuhuolian.xtencentplatform.IQQUserListener;
+import com.fonuhuolian.xtencentplatform.bean.QQUserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,8 +59,6 @@ public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        Log.e("ddd", result + "qq");
-
         try {
 
             // 转换成jsonObject
@@ -89,38 +87,26 @@ public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
             String level = jsonObject.optString("level", "0");
             String is_yellow_year_vip = jsonObject.optString("is_yellow_year_vip", "0");
 
+            if (ret != 0) {
 
-//            errmsg = jsonObject.getString("errmsg");
-//            int errcode = jsonObject.getInt("errcode");
-//
-//
-//            if (TextUtils.isEmpty(errmsg)) {
-//
-//                List<String> privilegeList = new ArrayList<String>();
-//
-//
-//                if (privilege != null && privilege.length() > 0) {
-//
-//                    for (int i = 0; i < privilege.length(); i++) {
-//                        String s = (String) privilege.get(i);
-//                        privilegeList.add(s);
-//                    }
-//                }
-//
-//                WechatUserInfo loginResp = new WechatUserInfo(openid, nickname, sex, province, city, country, headimgurl, unionid, privilegeList);
-//
-//                if (listener != null)
-//                    listener.onSuccess(loginResp);
-//
-//            } else {
-//
-//                if (listener != null)
-//                    listener.onFail(errmsg);
-//
-//            }
+                QQUserInfo userInfo = new QQUserInfo(
+                        ret, msg, is_lost, nickname, gender, province, city, year, constellation, figureurl,
+                        figureurl_1, figureurl_2, figureurl_qq_1, figureurl_qq_2, figureurl_qq, figureurl_type,
+                        is_yellow_vip, vip, yellow_vip_level, level, is_yellow_year_vip
+                );
+
+                if (listener != null)
+                    listener.onSuccess(userInfo);
+
+            } else {
+
+                if (listener != null)
+                    listener.onFail(msg);
+            }
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            if (listener != null)
+                listener.onFail("获取QQ用户信息时，转换json字符串发生异常");
         }
     }
 }
