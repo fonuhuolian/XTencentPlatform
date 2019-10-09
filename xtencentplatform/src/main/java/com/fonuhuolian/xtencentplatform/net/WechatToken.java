@@ -77,7 +77,7 @@ public class WechatToken extends AsyncTask<String, Integer, String> {
             int errcode = jsonObject.getInt("errcode");
             errmsg = jsonObject.getString("errmsg");
 
-            if (TextUtils.isEmpty(errmsg)) {
+            if (!TextUtils.isEmpty(errmsg)) {
                 String userInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid;
                 new WechatUserInfo(listener).execute(userInfo);
             } else {
