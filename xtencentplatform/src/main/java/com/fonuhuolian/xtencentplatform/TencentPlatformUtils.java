@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.fonuhuolian.xtencentplatform.net.QQUserInfo;
 import com.fonuhuolian.xtencentplatform.net.WechatToken;
 import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
@@ -35,7 +36,7 @@ public class TencentPlatformUtils {
 
 
     // TODO 微信登录方法
-    public static void onWechatLogin(Activity activity, IQQListener listener) {
+    public static void onWechatLogin(Activity activity) {
 
         // 将该app注册到微信
         final IWXAPI wxapi = WXAPIFactory.createWXAPI(activity, APP_ID_WECHAT);
@@ -75,6 +76,14 @@ public class TencentPlatformUtils {
         req.state = "wechat_sdk_demo_test";
         wxapi.sendReq(req);
 
+    }
+
+
+    public static void getQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQuserListener listener) {
+
+        String url = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + APP_ID_QQ + "&openid=" + OPENID;
+
+        new QQUserInfo(listener).execute(url);
     }
 
 
