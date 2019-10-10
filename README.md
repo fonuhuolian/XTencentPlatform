@@ -147,17 +147,40 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     @Override
     public void onResp(BaseResp baseResp) {
 
-        int errCode = baseResp.errCode;
-
-        if (errCode == WechatErrorCode.CODE_SUCCESS.getCode()) {
-            // 成功
-
-        } else if (errCode == WechatErrorCode.CODE_FAIL.getCode()) {
-            // 失败
-
-        } else if (errCode == WechatErrorCode.CODE_CANCLE.getCode()) {
-            // 取消
-
+        switch (baseResp.errCode) {
+            case BaseResp.ErrCode.ERR_OK:
+                // 如果是微信登录回调获取用户信息
+                if (TencentLogin.isWechatLoginCallBack(baseResp)) {      
+                    TencentLogin.onGetWechatUserInfo(baseResp, new IWechatUserListener() {
+                        @Override
+                        public void onStart() {
+                                   
+                        }
+       
+                        @Override
+                        public void onFail(String errMsg) {
+                                   
+                        }
+       
+                        @Override
+                        public void onSuccess(WechatUserInfo info) {
+                                   
+                        }
+                    });
+       
+                }
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                Toast.makeText(mActivity, "取消", Toast.LENGTH_SHORT).show();
+                break;
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                Toast.makeText(mActivity, "拒绝授权", Toast.LENGTH_SHORT).show();
+                break;
+            case BaseResp.ErrCode.ERR_UNSUPPORT:
+                break;
+            default:
+                break;
+            }
         }
     }
 }
