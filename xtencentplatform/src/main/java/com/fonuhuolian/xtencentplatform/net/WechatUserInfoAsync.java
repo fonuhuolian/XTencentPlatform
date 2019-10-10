@@ -3,8 +3,8 @@ package com.fonuhuolian.xtencentplatform.net;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.fonuhuolian.xtencentplatform.login.IWechaListener;
 import com.fonuhuolian.xtencentplatform.bean.WechatUserInfo;
+import com.fonuhuolian.xtencentplatform.login.IWechaListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,7 +88,7 @@ public class WechatUserInfoAsync extends AsyncTask<String, Integer, String> {
 
             if (TextUtils.isEmpty(errmsg)) {
 
-                List<String> privilegeList = new ArrayList<String>();
+                List<String> privilegeList = new ArrayList<>();
 
                 try {
 
