@@ -52,29 +52,32 @@ TencentPlatform.init(this, QQ_APP_ID, WECHAT_APP_ID, WECHAT_APP_SECRET);
 QQ登录
 ```
 
-private IUiListener iUiListener;
+private QQLoginListener qqLoginListener;
 
-iUiListener = new IUiListener() {
+qqLoginListener = new QQLoginListener() {
+
     @Override
     public void onComplete(QQLoginResp resp) {
+    
+        // 如需用户信息，调用如下方法
         TencentLogin.onGetQQUserInfo(resp.getAccess_token(), resp.getOpenid(), new IQQUserListener() {
             @Override
             public void onStart() {
                 // 开启loading对话框
             }
         
-        @Override
-        public void onFail(String errMsg) {
-            // 关闭loading对话框
-            // 提示错误信息 errMsg
-        }
+            @Override
+            public void onFail(String errMsg) {
+                // 关闭loading对话框
+                // 提示错误信息 errMsg
+            }
         
-        @Override
-        public void onSuccess(QQUserInfo info) {
-            // 关闭loading对话框
-                                // 用户信息 info
-                            }
-                        });
+            @Override
+            public void onSuccess(QQUserInfo info) {
+                // 关闭loading对话框
+                // 用户信息 info
+            }
+         });
     }
 
     @Override
@@ -92,7 +95,7 @@ loginQq.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
         // 登录
-        TencentLogin.onQQLogin(mActivity, iqqListener);
+        TencentLogin.onQQLogin(mActivity, qqLoginListener);
     }
 
 });
@@ -100,8 +103,8 @@ loginQq.setOnClickListener(new View.OnClickListener() {
 ```
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    // 回调IUiListener方法
-    TencentLogin.onQQActivityResult(requestCode, resultCode, data, iqqListener);
+    // 回调QQLoginListener方法
+    TencentLogin.onQQActivityResult(requestCode, resultCode, data, qqLoginListener);
     super.onActivityResult(requestCode, resultCode, data);
 }
 ```
