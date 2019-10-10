@@ -34,9 +34,9 @@ public class TencentLogin {
     // TODO 微信获取用户信息（需要在onWechatLogin()回调里取）
     public static void onGetWechatUserInfo(Activity activity, String access_token, IWechaListener listener) {
 
-        String tokenUrl = " https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + TencentPlatformUtils.getAppIdWechat() + "&secret=" +
+        String userInfoUrl = " https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + TencentPlatformUtils.getAppIdWechat() + "&secret=" +
                 TencentPlatformUtils.getAppSecretWechat() + "&code=" + access_token + "&grant_type=authorization_code";
 
-        new WechatTokenAsync(listener).execute(tokenUrl);
+        new WechatTokenAsync(listener).execute(userInfoUrl);
     }
 }
