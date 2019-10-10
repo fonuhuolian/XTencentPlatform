@@ -1,4 +1,4 @@
-package com.fonuhuolian.xtencentplatform;
+package com.fonuhuolian.xtencentplatform.bean;
 
 public class QQLoginResp {
 

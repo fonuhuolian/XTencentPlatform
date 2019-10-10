@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.fonuhuolian.xtencentplatform.login.QQLoginListener;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.tauth.Tencent;
@@ -43,7 +44,7 @@ public class TencentPlatform {
     // TODO 图文分享
     // QQ 分享 必填 链接、title 且不能为空
     // QQ空间 分享 必填 链接、title、至少一张图片 且不能为空
-    public static void onQQShareImageAndText(Activity activity, IQQListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
+    public static void onQQShareImageAndText(Activity activity, QQLoginListener listener, QQType type, String title, String targetUrl, String summary, String... imageUrls) {
 
         Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
 

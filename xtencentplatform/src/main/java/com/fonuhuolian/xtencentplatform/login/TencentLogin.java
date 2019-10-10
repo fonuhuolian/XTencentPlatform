@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.fonuhuolian.xtencentplatform.IQQListener;
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
 import com.fonuhuolian.xtencentplatform.net.QQUserInfoAsync;
 import com.fonuhuolian.xtencentplatform.net.WechatTokenAsync;
@@ -45,7 +44,7 @@ public class TencentLogin {
     }
 
     // TODO QQ登录方法
-    public static void onQQLogin(Activity activity, IQQListener listener) {
+    public static void onQQLogin(Activity activity, QQLoginListener listener) {
         Tencent mTencent = Tencent.createInstance(TencentPlatform.getAppIdQq(), activity);
         if (!mTencent.isSessionValid()) {
             mTencent.login(activity, "all", listener);
@@ -53,7 +52,7 @@ public class TencentLogin {
     }
 
     // TODO QQ在onActivityResult调用此方法
-    public static void onQQActivityResult(int requestCode, int resultCode, Intent data, IQQListener listener) {
+    public static void onQQActivityResult(int requestCode, int resultCode, Intent data, QQLoginListener listener) {
         if (requestCode == Constants.REQUEST_LOGIN) {
             Tencent.onActivityResultData(requestCode, resultCode, data, listener);
         }
