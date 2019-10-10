@@ -25,6 +25,14 @@ public class WechatTokenAsync extends AsyncTask<String, Integer, String> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        if (listener != null)
+            listener.onStart();
+    }
+
+    @Override
     protected String doInBackground(String... params) {
 
         String json = "";
