@@ -70,8 +70,11 @@ public class QQUnionIdAsync extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
 
+        Log.e("ddd","---"+result);
+
         try {
 
+            Log.e("ddd","0");
             // 转换成jsonObject
             JSONObject jsonObject = new JSONObject(result);
             Log.e("ddd","1");
