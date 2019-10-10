@@ -60,7 +60,7 @@ qqLoginListener = new QQLoginListener() {
     public void onLoginComplete(QQLoginResp resp) {
     
         // 如需用户信息，调用如下方法
-        TencentLogin.onGetQQUserInfo(resp.getAccess_token(), resp.getOpenid(), new IQQUserListener() {
+        TencentLogin.onGetQQUserInfo(resp.getAccess_token(), resp.getOpenid(), true, new IQQUserListener() {
             @Override
             public void onStart() {
                 // 开启loading对话框
