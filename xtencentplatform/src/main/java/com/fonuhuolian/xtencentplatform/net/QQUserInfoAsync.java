@@ -1,6 +1,7 @@
 package com.fonuhuolian.xtencentplatform.net;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.fonuhuolian.xtencentplatform.bean.QQUserInfo;
 import com.fonuhuolian.xtencentplatform.login.IQQUserListener;
@@ -16,9 +17,14 @@ import java.net.URL;
 public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
 
     private IQQUserListener listener;
+    private String OPENID;
 
-    public QQUserInfoAsync(IQQUserListener listener) {
+    public QQUserInfoAsync(IQQUserListener listener, String OPENID) {
         this.listener = listener;
+        this.OPENID = OPENID;
+
+        if (TextUtils.isEmpty(OPENID))
+            this.OPENID = "";
     }
 
     @Override
@@ -98,7 +104,7 @@ public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
             if (ret == 0) {
 
                 QQUserInfo userInfo = new QQUserInfo(
-                        ret, msg, is_lost, nickname, gender, province, city, year, constellation, figureurl,
+                        ret, OPENID, msg, is_lost, nickname, gender, province, city, year, constellation, figureurl,
                         figureurl_1, figureurl_2, figureurl_qq_1, figureurl_qq_2, figureurl_qq, figureurl_type,
                         is_yellow_vip, vip, yellow_vip_level, level, is_yellow_year_vip
                 );

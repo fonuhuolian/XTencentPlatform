@@ -90,6 +90,6 @@ public class TencentLogin {
 
         String infoUrl = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + TencentPlatform.getAppIdQq() + "&openid=" + OPENID;
 
-        new QQUserInfoAsync(listener).execute(infoUrl);
+        new QQUserInfoAsync(listener, OPENID).execute(infoUrl);
     }
 }
