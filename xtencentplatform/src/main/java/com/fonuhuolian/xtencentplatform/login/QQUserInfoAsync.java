@@ -1,11 +1,8 @@
-package com.fonuhuolian.xtencentplatform.net;
+package com.fonuhuolian.xtencentplatform.login;
 
 import android.os.AsyncTask;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.fonuhuolian.xtencentplatform.bean.QQUserInfo;
-import com.fonuhuolian.xtencentplatform.login.IQQUserListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,24 +12,25 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class QQUnionIdAsync extends AsyncTask<String, Integer, String> {
+public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
 
     private IQQUserListener listener;
     private String OPENID;
+    private String UNIONID;
+    private boolean isHasUnionId;
 
-    public QQUnionIdAsync(IQQUserListener listener, String OPENID) {
+    protected QQUserInfoAsync(IQQUserListener listener, String OPENID, String UNIONID, boolean isHasUnionId) {
         this.listener = listener;
         this.OPENID = OPENID;
-
-        if (TextUtils.isEmpty(OPENID))
-            this.OPENID = "";
+        this.UNIONID = UNIONID;
+        this.isHasUnionId = isHasUnionId;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (listener != null)
+        if (!isHasUnionId && listener != null)
             listener.onStart();
     }
 
@@ -74,8 +72,6 @@ public class QQUnionIdAsync extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        Log.e("unionId", result + "result");
-
         try {
 
             // 转换成jsonObject
@@ -109,7 +105,7 @@ public class QQUnionIdAsync extends AsyncTask<String, Integer, String> {
                 QQUserInfo userInfo = new QQUserInfo(
                         ret, OPENID, msg, is_lost, nickname, gender, province, city, year, constellation, figureurl,
                         figureurl_1, figureurl_2, figureurl_qq_1, figureurl_qq_2, figureurl_qq, figureurl_type,
-                        is_yellow_vip, vip, yellow_vip_level, level, is_yellow_year_vip
+                        is_yellow_vip, vip, yellow_vip_level, level, is_yellow_year_vip, UNIONID
                 );
 
                 if (listener != null)

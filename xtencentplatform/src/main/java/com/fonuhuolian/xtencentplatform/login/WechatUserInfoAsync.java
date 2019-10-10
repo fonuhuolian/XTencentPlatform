@@ -1,10 +1,12 @@
-package com.fonuhuolian.xtencentplatform.net;
+package com.fonuhuolian.xtencentplatform.login;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import com.fonuhuolian.xtencentplatform.bean.WechatUserInfo;
 import com.fonuhuolian.xtencentplatform.login.IWechatUserListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,24 +14,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * TODO 获取token 并获取用户信息
+ * TODO 获取用户信息
  */
-public class WechatTokenAsync extends AsyncTask<String, Integer, String> {
+public class WechatUserInfoAsync extends AsyncTask<String, Integer, String> {
 
     private IWechatUserListener listener;
 
-    public WechatTokenAsync(IWechatUserListener listener) {
+    public WechatUserInfoAsync(IWechatUserListener listener) {
         this.listener = listener;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        if (listener != null)
-            listener.onStart();
     }
 
     @Override
@@ -76,24 +72,56 @@ public class WechatTokenAsync extends AsyncTask<String, Integer, String> {
             JSONObject jsonObject = new JSONObject(result);
 
             // 获取成功的信息
-            String access_token = jsonObject.optString("access_token", "");
             String openid = jsonObject.optString("openid", "");
+            String nickname = jsonObject.optString("nickname", "");
+            int sex = jsonObject.optInt("sex", 1);
+            String language = jsonObject.optString("language", "");
+            String city = jsonObject.optString("city", "");
+            String province = jsonObject.optString("province", "");
+            String country = jsonObject.optString("country", "");
+            String headimgurl = jsonObject.optString("headimgurl", "");
+            String unionid = jsonObject.optString("unionid", "");
+            JSONArray privilege = jsonObject.optJSONArray("privilege");
 
-            // 获取失败信息
+            // 获取错误信息
             String errmsg = jsonObject.optString("errmsg", "");
 
             if (TextUtils.isEmpty(errmsg)) {
-                // 获取token成功，请求用户信息
-                String userInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid;
-                new WechatUserInfoAsync(listener).execute(userInfo);
+
+                List<String> privilegeList = new ArrayList<>();
+
+                try {
+
+                    if (privilege != null && privilege.length() > 0) {
+
+                        for (int i = 0; i < privilege.length(); i++) {
+                            Object o = privilege.get(i);
+                            if (o != null) {
+                                privilegeList.add((String) o);
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                WechatUserInfo wechatUserInfo = new WechatUserInfo(
+                        openid, nickname, sex, language, city, province, country, headimgurl, unionid, privilegeList);
+
+                if (listener != null)
+                    listener.onSuccess(wechatUserInfo);
+
             } else {
+
                 if (listener != null)
                     listener.onFail(errmsg);
+
             }
 
         } catch (JSONException e) {
             if (listener != null)
-                listener.onFail("获取微信用户token时，转换json字符串发生异常");
+                listener.onFail("获取微信用户信息时，转换json字符串发生异常");
         }
     }
 }

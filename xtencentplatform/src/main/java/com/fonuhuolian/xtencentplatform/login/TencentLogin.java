@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
-import com.fonuhuolian.xtencentplatform.net.QQUnionIdAsync;
-import com.fonuhuolian.xtencentplatform.net.QQUserInfoAsync;
-import com.fonuhuolian.xtencentplatform.net.WechatTokenAsync;
 import com.tencent.connect.common.Constants;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -86,16 +83,23 @@ public class TencentLogin {
         }
     }
 
-    // TODO  QQ获取用户信息（需要在IQQListener里通过QQLoginResp取OPENID）
-    public static void onGetQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
+    // TODO  QQ获取用户信息（需要在IQQListener里通过QQLoginResp取OPENID，ACCESS_TOKEN）
+    // TODO  isNeedUnionId 是否需要获取unionId  unionId需要在官网申请权限
+    public static void onGetQQUserInfo(String ACCESS_TOKEN, String OPENID, boolean isNeedUnionId, IQQUserListener listener) {
 
-        String unionUrl = "https://graph.qq.com/oauth2.0/me?access_token=" + ACCESS_TOKEN + "&unionid=1";
+        if (isNeedUnionId) {
+            String unionUrl = "https://graph.qq.com/oauth2.0/me?access_token=" + ACCESS_TOKEN + "&unionid=1";
+            new QQUnionIdAsync(listener, ACCESS_TOKEN, OPENID).execute(unionUrl);
+        } else {
+            onGetQQUserInfoFinal(ACCESS_TOKEN, OPENID, "", false, listener);
+        }
 
-        new QQUnionIdAsync(listener, OPENID).execute(unionUrl);
+
     }
 
-    private static void getQQInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
+    // TODO  QQ获取用户信息（内部调用 不对外提供访问）
+    protected static void onGetQQUserInfoFinal(String ACCESS_TOKEN, String OPENID, String UNIONID, boolean isHasUnionId, IQQUserListener listener) {
         String infoUrl = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + TencentPlatform.getAppIdQq() + "&openid=" + OPENID;
-        new QQUserInfoAsync(listener, OPENID).execute(infoUrl);
+        new QQUserInfoAsync(listener, OPENID, UNIONID).execute(infoUrl);
     }
 }
