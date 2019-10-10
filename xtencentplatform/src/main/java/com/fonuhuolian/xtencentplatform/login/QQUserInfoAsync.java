@@ -17,20 +17,20 @@ public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
     private IQQUserListener listener;
     private String OPENID;
     private String UNIONID;
-    private boolean isHasUnionId;
+    private boolean isHasRequestUnionId;
 
-    protected QQUserInfoAsync(IQQUserListener listener, String OPENID, String UNIONID, boolean isHasUnionId) {
+    protected QQUserInfoAsync(IQQUserListener listener, String OPENID, String UNIONID, boolean isHasRequestUnionId) {
         this.listener = listener;
         this.OPENID = OPENID;
         this.UNIONID = UNIONID;
-        this.isHasUnionId = isHasUnionId;
+        this.isHasRequestUnionId = isHasRequestUnionId;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (!isHasUnionId && listener != null)
+        if (!isHasRequestUnionId && listener != null)
             listener.onStart();
     }
 
