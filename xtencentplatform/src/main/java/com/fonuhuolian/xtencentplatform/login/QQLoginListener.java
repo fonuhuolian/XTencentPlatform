@@ -1,7 +1,5 @@
 package com.fonuhuolian.xtencentplatform.login;
 
-import android.util.Log;
-
 import com.fonuhuolian.xtencentplatform.bean.QQLoginResp;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
@@ -15,8 +13,6 @@ public abstract class QQLoginListener implements IUiListener {
     public final void onComplete(Object o) {
 
         String json = o.toString();
-
-        Log.e("dd",json+"json");
 
         QQLoginResp resp = new QQLoginResp();
 
