@@ -1,7 +1,5 @@
 package com.fonuhuolian.xtencentplatform.bean;
 
-import android.text.TextUtils;
-
 /**
  * QQ登录的用户信息
  */
@@ -82,7 +80,7 @@ public class QQUserInfo {
     }
 
     public String getMsg() {
-        return TextUtils.isEmpty(msg) ? "" : msg;
+        return msg;
     }
 
     public int getIs_lost() {
@@ -90,27 +88,27 @@ public class QQUserInfo {
     }
 
     public String getNickname() {
-        return TextUtils.isEmpty(nickname) ? "" : nickname;
+        return nickname;
     }
 
     public String getGender() {
-        return TextUtils.isEmpty(gender) ? "男" : gender;
+        return gender;
     }
 
     public String getProvince() {
-        return TextUtils.isEmpty(province) ? "" : province;
+        return province;
     }
 
     public String getCity() {
-        return TextUtils.isEmpty(city) ? "" : city;
+        return city;
     }
 
     public String getYear() {
-        return TextUtils.isEmpty(year) ? "0" : year;
+        return year;
     }
 
     public String getConstellation() {
-        return TextUtils.isEmpty(constellation) ? "" : constellation;
+        return constellation;
     }
 
     public String getFigureurl() {
@@ -138,26 +136,26 @@ public class QQUserInfo {
     }
 
     public String getFigureurl_type() {
-        return TextUtils.isEmpty(figureurl_type) ? "0" : figureurl_type;
+        return figureurl_type;
     }
 
     public String getIs_yellow_vip() {
-        return TextUtils.isEmpty(is_yellow_vip) ? "0" : is_yellow_vip;
+        return is_yellow_vip;
     }
 
     public String getVip() {
-        return TextUtils.isEmpty(vip) ? "0" : vip;
+        return vip;
     }
 
     public String getYellow_vip_level() {
-        return TextUtils.isEmpty(yellow_vip_level) ? "0" : yellow_vip_level;
+        return yellow_vip_level;
     }
 
     public String getLevel() {
-        return TextUtils.isEmpty(level) ? "0" : level;
+        return level;
     }
 
     public String getIs_yellow_year_vip() {
-        return TextUtils.isEmpty(is_yellow_year_vip) ? "0" : is_yellow_year_vip;
+        return is_yellow_year_vip;
     }
 }
