@@ -8,6 +8,8 @@ import com.fonuhuolian.xtencentplatform.TencentPlatform;
 import com.fonuhuolian.xtencentplatform.net.QQUserInfoAsync;
 import com.fonuhuolian.xtencentplatform.net.WechatTokenAsync;
 import com.tencent.connect.common.Constants;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -33,14 +35,39 @@ public class TencentLogin {
 
     }
 
+    // TODO 是否是微信登录的回调
+    public static boolean isWechatLoginCallBack(BaseResp baseResp) {
+        return baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH;
+    }
 
     // TODO 微信获取用户信息（需要在onWechatLogin()回调里取）
-    public static void onGetWechatUserInfo(String access_token, IWechatUserListener listener) {
+    public static void onGetWechatUserInfo(BaseResp baseResp, IWechatUserListener listener) {
 
-        String tokenUrl = " https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + TencentPlatform.getAppIdWechat() + "&secret=" +
-                TencentPlatform.getAppSecretWechat() + "&code=" + access_token + "&grant_type=authorization_code";
+        switch (baseResp.errCode) {
+            case BaseResp.ErrCode.ERR_OK:
+                if (isWechatLoginCallBack(baseResp)) {
+                    String tokenUrl = " https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + TencentPlatform.getAppIdWechat() + "&secret=" +
+                            TencentPlatform.getAppSecretWechat() + "&code=" + ((SendAuth.Resp) baseResp).code + "&grant_type=authorization_code";
 
-        new WechatTokenAsync(listener).execute(tokenUrl);
+                    new WechatTokenAsync(listener).execute(tokenUrl);
+                } else {
+                    if (listener != null)
+                        listener.onFail("获取token失败(可能不是登录获取的用户信息)");
+                }
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                if (listener != null)
+                    listener.onFail("用户取消授权，获取信息失败");
+                break;
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                if (listener != null)
+                    listener.onFail("用户拒绝授权，获取信息失败");
+                break;
+            default:
+                if (listener != null)
+                    listener.onFail("授权失败");
+
+        }
     }
 
     // TODO QQ登录方法

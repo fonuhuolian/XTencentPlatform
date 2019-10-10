@@ -49,7 +49,7 @@ TencentPlatform.init(this, QQ_APP_ID, WECHAT_APP_ID, WECHAT_APP_SECRET);
      </activity>
 <application>
 ```
-QQ登录
+- QQ登录
 ```
 
 private QQLoginListener qqLoginListener;
@@ -57,7 +57,7 @@ private QQLoginListener qqLoginListener;
 qqLoginListener = new QQLoginListener() {
 
     @Override
-    public void onComplete(QQLoginResp resp) {
+    public void onLoginComplete(QQLoginResp resp) {
     
         // 如需用户信息，调用如下方法
         TencentLogin.onGetQQUserInfo(resp.getAccess_token(), resp.getOpenid(), new IQQUserListener() {
@@ -81,12 +81,12 @@ qqLoginListener = new QQLoginListener() {
     }
 
     @Override
-    public void onError(UiError uiError) {
+    public void onLoginError(UiError uiError) {
 
     }
 
     @Override
-    public void onCancel() {
+    public void onLoginCancel() {
 
     }
 };
@@ -107,4 +107,67 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     TencentLogin.onQQActivityResult(requestCode, resultCode, data, qqLoginListener);
     super.onActivityResult(requestCode, resultCode, data);
 }
+```
+- 微信登录
+
+1.包名目录下创建`wxapi`文件夹
+
+2.此包下创建名为`WXEntryActivity`的Activity,并实现`IWXAPIEventHandler`接口
+```
+public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+
+    private IWXAPI iwxapi;
+    private static final String APP_ID = "您应用的app_Id";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 由第三方App个性化展示登录、分享结果
+        setContentView(R.layout.activity_wxpay_entry);
+
+        iwxapi = WXAPIFactory.createWXAPI(this, APP_ID);
+        iwxapi.handleIntent(getIntent(), this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        iwxapi.handleIntent(intent, this);
+    }
+
+    @Override
+    public void onReq(BaseReq baseReq) {
+
+    }
+
+    /**
+     * TODO 微信支付回调
+     */
+    @Override
+    public void onResp(BaseResp baseResp) {
+
+        int errCode = baseResp.errCode;
+
+        if (errCode == WechatErrorCode.CODE_SUCCESS.getCode()) {
+            // 成功
+
+        } else if (errCode == WechatErrorCode.CODE_FAIL.getCode()) {
+            // 失败
+
+        } else if (errCode == WechatErrorCode.CODE_CANCLE.getCode()) {
+            // 取消
+
+        }
+    }
+}
+```
+3.清单文件进行注册
+```
+<activity
+    android:name=".wxapi.WXEntryActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:exported="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="portrait" />
 ```
