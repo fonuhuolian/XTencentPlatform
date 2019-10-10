@@ -23,7 +23,7 @@ public class WechatUserInfo {
     private String nickname;
     // 普通用户性别，1 为男性，2 为女性
     private String sex;
-    // 语言
+    // 微信客户端当前语言
     private String language;
     // 普通用户个人资料填写的城市
     private String city;
