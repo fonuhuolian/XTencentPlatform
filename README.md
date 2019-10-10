@@ -142,7 +142,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     }
 
     /**
-     * TODO 微信支付回调
+     * TODO 微信登录、分享回调
      */
     @Override
     public void onResp(BaseResp baseResp) {
@@ -167,7 +167,6 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                                    
                         }
                     });
-       
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
@@ -180,7 +179,6 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                 break;
             default:
                 break;
-            }
         }
     }
 }
