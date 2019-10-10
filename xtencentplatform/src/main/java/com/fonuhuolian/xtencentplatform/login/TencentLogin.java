@@ -100,6 +100,6 @@ public class TencentLogin {
     // TODO  QQ获取用户信息（内部调用 不对外提供访问）
     protected static void onGetQQUserInfoFinal(String ACCESS_TOKEN, String OPENID, String UNIONID, boolean isHasUnionId, IQQUserListener listener) {
         String infoUrl = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + TencentPlatform.getAppIdQq() + "&openid=" + OPENID;
-        new QQUserInfoAsync(listener, OPENID, UNIONID).execute(infoUrl);
+        new QQUserInfoAsync(listener, OPENID, UNIONID, isHasUnionId).execute(infoUrl);
     }
 }
