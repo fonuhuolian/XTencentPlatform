@@ -2,8 +2,8 @@ package com.fonuhuolian.xtencentplatform.net;
 
 import android.os.AsyncTask;
 
-import com.fonuhuolian.xtencentplatform.IQQUserListener;
 import com.fonuhuolian.xtencentplatform.bean.QQUserInfo;
+import com.fonuhuolian.xtencentplatform.login.IQQUserListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +19,14 @@ public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
 
     public QQUserInfoAsync(IQQUserListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        if (listener != null)
+            listener.onStart();
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.fonuhuolian.xtencentplatform.net;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.fonuhuolian.xtencentplatform.login.IWechaListener;
+import com.fonuhuolian.xtencentplatform.login.IWechatUserListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +18,9 @@ import java.net.URL;
  */
 public class WechatTokenAsync extends AsyncTask<String, Integer, String> {
 
-    private IWechaListener listener;
+    private IWechatUserListener listener;
 
-    public WechatTokenAsync(IWechaListener listener) {
+    public WechatTokenAsync(IWechatUserListener listener) {
         this.listener = listener;
     }
 

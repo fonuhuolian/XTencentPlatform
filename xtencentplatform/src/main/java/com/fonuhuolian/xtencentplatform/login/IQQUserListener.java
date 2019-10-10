@@ -1,8 +1,8 @@
 package com.fonuhuolian.xtencentplatform.login;
 
-import com.fonuhuolian.xtencentplatform.bean.WechatUserInfo;
+import com.fonuhuolian.xtencentplatform.bean.QQUserInfo;
 
-public interface IWechaListener {
+public interface IQQUserListener {
 
     // 获取信息开始前
     void onStart();
@@ -11,5 +11,6 @@ public interface IWechaListener {
     void onFail(String errMsg);
 
     // 获取成功
-    void onSuccess(WechatUserInfo info);
+    void onSuccess(QQUserInfo info);
+
 }

@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.fonuhuolian.xtencentplatform.bean.WechatUserInfo;
-import com.fonuhuolian.xtencentplatform.login.IWechaListener;
+import com.fonuhuolian.xtencentplatform.login.IWechatUserListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class WechatUserInfoAsync extends AsyncTask<String, Integer, String> {
 
-    private IWechaListener listener;
+    private IWechatUserListener listener;
 
-    public WechatUserInfoAsync(IWechaListener listener) {
+    public WechatUserInfoAsync(IWechatUserListener listener) {
         this.listener = listener;
     }
 

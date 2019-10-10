@@ -2,24 +2,16 @@ package com.fonuhuolian.xtencentplatform;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.fonuhuolian.xtencentplatform.net.QQUserInfoAsync;
-import com.fonuhuolian.xtencentplatform.net.WechatTokenAsync;
-import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TencentPlatformUtils {
+public class TencentPlatform {
 
     private static String APP_ID_QQ;
     private static String APP_ID_WECHAT;
@@ -45,33 +37,6 @@ public class TencentPlatformUtils {
 
     public static String getAppSecretWechat() {
         return APP_SECRET_WECHAT;
-    }
-
-
-
-
-
-    public static void getQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
-
-        String url = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + APP_ID_QQ + "&openid=" + OPENID;
-
-        new QQUserInfoAsync(listener).execute(url);
-    }
-
-
-    // TODO QQ在onActivityResult调用此方法
-    public static void onQQResult(int requestCode, int resultCode, Intent data, IQQListener listener) {
-        if (requestCode == Constants.REQUEST_LOGIN) {
-            Tencent.onActivityResultData(requestCode, resultCode, data, listener);
-        }
-    }
-
-    // TODO QQ登录方法
-    public static void onQQLogin(Activity activity, IQQListener listener) {
-        Tencent mTencent = Tencent.createInstance(APP_ID_QQ, mContext);
-        if (!mTencent.isSessionValid()) {
-            mTencent.login(activity, "all", listener);
-        }
     }
 
 
