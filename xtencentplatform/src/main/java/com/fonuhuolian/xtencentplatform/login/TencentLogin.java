@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
+import com.fonuhuolian.xtencentplatform.net.QQUnionIdAsync;
 import com.fonuhuolian.xtencentplatform.net.QQUserInfoAsync;
 import com.fonuhuolian.xtencentplatform.net.WechatTokenAsync;
 import com.tencent.connect.common.Constants;
@@ -88,8 +89,13 @@ public class TencentLogin {
     // TODO  QQ获取用户信息（需要在IQQListener里通过QQLoginResp取OPENID）
     public static void onGetQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
 
-        String infoUrl = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + TencentPlatform.getAppIdQq() + "&openid=" + OPENID;
+        String unionUrl = "https://graph.qq.com/oauth2.0/me?access_token=" + ACCESS_TOKEN;
 
+        new QQUnionIdAsync(listener, OPENID).execute(unionUrl);
+    }
+
+    private static void getQQInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
+        String infoUrl = "https://graph.qq.com/user/get_user_info?access_token=" + ACCESS_TOKEN + "&oauth_consumer_key=" + TencentPlatform.getAppIdQq() + "&openid=" + OPENID;
         new QQUserInfoAsync(listener, OPENID).execute(infoUrl);
     }
 }
