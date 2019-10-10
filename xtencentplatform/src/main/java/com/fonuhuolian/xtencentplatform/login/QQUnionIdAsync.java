@@ -2,7 +2,6 @@ package com.fonuhuolian.xtencentplatform.login;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,32 +69,26 @@ public class QQUnionIdAsync extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        Log.e("ddd","---"+result);
-
         try {
 
-            Log.e("ddd","0");
+            int start = result.indexOf("{");
+            int end = result.lastIndexOf("}");
+
+            result = result.substring(start, end + 1);
+
             // 转换成jsonObject
             JSONObject jsonObject = new JSONObject(result);
-            Log.e("ddd","1");
 
             // 获取信息
             int error = jsonObject.optInt("error", 0);
-            Log.e("ddd","2");
             String error_description = jsonObject.optString("error_description", "");
-            Log.e("ddd","3");
             String client_id = jsonObject.optString("client_id", "");
-            Log.e("ddd","4");
             String openid = jsonObject.optString("openid", "");
-            Log.e("ddd","5");
             String unionid = jsonObject.optString("unionid", "");
-            Log.e("ddd","6");
 
             if (TextUtils.isEmpty(error_description)) {
-                Log.e("ddd","7");
                 // 成功
                 TencentLogin.onGetQQUserInfoFinal(ACCESS_TOKEN, OPENID, unionid, true, listener);
-                Log.e("ddd","8");
             } else {
                 if (listener != null)
                     listener.onFail(error_description);
@@ -104,8 +97,6 @@ public class QQUnionIdAsync extends AsyncTask<String, Integer, String> {
         } catch (JSONException e) {
             if (listener != null)
                 listener.onFail("获取UnionId时转换json字符串发生异常");
-
-            Log.getStackTraceString(e);
         }
     }
 }
