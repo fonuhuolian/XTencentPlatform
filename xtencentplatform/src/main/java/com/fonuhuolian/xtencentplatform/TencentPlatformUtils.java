@@ -35,34 +35,20 @@ public class TencentPlatformUtils {
     }
 
 
-    // TODO 微信登录方法
-    public static void onWechatLogin(Activity activity) {
+    public static String getAppIdQq() {
+        return APP_ID_QQ;
+    }
 
-        // 将该app注册到微信
-        final IWXAPI wxapi = WXAPIFactory.createWXAPI(activity, APP_ID_WECHAT);
+    public static String getAppIdWechat() {
+        return APP_ID_WECHAT;
+    }
 
-        if (!wxapi.isWXAppInstalled()) {
-            Toast.makeText(activity, "您尚未安装微信客户端", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "wechat_sdk_demo_test";
-        wxapi.sendReq(req);
-
+    public static String getAppSecretWechat() {
+        return APP_SECRET_WECHAT;
     }
 
 
-    // TODO 微信登录方法
-    public static void onWechatLoginResult(Activity activity, String code, IWechaListener listener) {
 
-
-        String tokenUrl = " https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + APP_ID_WECHAT + "&secret=" +
-                APP_SECRET_WECHAT + "&code=" + code + "&grant_type=authorization_code";
-
-        new WechatTokenAsync(listener).execute(tokenUrl);
-    }
 
 
     public static void getQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {

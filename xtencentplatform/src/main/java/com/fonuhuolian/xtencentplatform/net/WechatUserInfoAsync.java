@@ -3,7 +3,7 @@ package com.fonuhuolian.xtencentplatform.net;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.fonuhuolian.xtencentplatform.IWechaListener;
+import com.fonuhuolian.xtencentplatform.login.IWechaListener;
 import com.fonuhuolian.xtencentplatform.bean.WechatUserInfo;
 
 import org.json.JSONArray;

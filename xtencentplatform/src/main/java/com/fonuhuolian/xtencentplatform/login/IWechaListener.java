@@ -1,4 +1,4 @@
-package com.fonuhuolian.xtencentplatform;
+package com.fonuhuolian.xtencentplatform.login;
 
 import com.fonuhuolian.xtencentplatform.bean.WechatUserInfo;
 

@@ -3,7 +3,6 @@ package com.fonuhuolian.xtencentplatform.login;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.fonuhuolian.xtencentplatform.IWechaListener;
 import com.fonuhuolian.xtencentplatform.TencentPlatformUtils;
 import com.fonuhuolian.xtencentplatform.net.WechatTokenAsync;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
