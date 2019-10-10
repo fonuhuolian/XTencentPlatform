@@ -90,4 +90,20 @@ public class WechatUserInfo {
     public List<String> getPrivilege() {
         return privilege;
     }
+
+    @Override
+    public String toString() {
+        return "WechatUserInfo{" +
+                "openid='" + openid + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", sex='" + sex + '\'' +
+                ", language='" + language + '\'' +
+                ", city='" + city + '\'' +
+                ", province='" + province + '\'' +
+                ", country='" + country + '\'' +
+                ", headimgurl='" + headimgurl + '\'' +
+                ", unionid='" + unionid + '\'' +
+                ", privilege=" + privilege +
+                '}';
+    }
 }

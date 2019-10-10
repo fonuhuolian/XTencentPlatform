@@ -110,4 +110,22 @@ public class QQLoginResp {
     public void setExpires_time(long expires_time) {
         this.expires_time = expires_time;
     }
+
+    @Override
+    public String toString() {
+        return "QQLoginResp{" +
+                "ret=" + ret +
+                ", openid='" + openid + '\'' +
+                ", access_token='" + access_token + '\'' +
+                ", pay_token='" + pay_token + '\'' +
+                ", expires_in=" + expires_in +
+                ", pf='" + pf + '\'' +
+                ", pfkey='" + pfkey + '\'' +
+                ", msg='" + msg + '\'' +
+                ", login_cost=" + login_cost +
+                ", query_authority_cost=" + query_authority_cost +
+                ", authority_cost=" + authority_cost +
+                ", expires_time=" + expires_time +
+                '}';
+    }
 }
