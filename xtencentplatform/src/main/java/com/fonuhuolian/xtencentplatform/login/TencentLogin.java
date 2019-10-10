@@ -89,7 +89,7 @@ public class TencentLogin {
     // TODO  QQ获取用户信息（需要在IQQListener里通过QQLoginResp取OPENID）
     public static void onGetQQUserInfo(String ACCESS_TOKEN, String OPENID, IQQUserListener listener) {
 
-        String unionUrl = "https://graph.qq.com/oauth2.0/me?access_token=" + ACCESS_TOKEN;
+        String unionUrl = "https://graph.qq.com/oauth2.0/me?access_token=" + ACCESS_TOKEN + "&unionid=1";
 
         new QQUnionIdAsync(listener, OPENID).execute(unionUrl);
     }

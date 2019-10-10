@@ -74,7 +74,7 @@ public class QQUnionIdAsync extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        Log.e("ddd", result + "result");
+        Log.e("unionId", result + "result");
 
         try {
 
