@@ -95,7 +95,7 @@ public class QQUserInfoAsync extends AsyncTask<String, Integer, String> {
             String level = jsonObject.optString("level", "0");
             String is_yellow_year_vip = jsonObject.optString("is_yellow_year_vip", "0");
 
-            if (ret != 0) {
+            if (ret == 0) {
 
                 QQUserInfo userInfo = new QQUserInfo(
                         ret, msg, is_lost, nickname, gender, province, city, year, constellation, figureurl,
