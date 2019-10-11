@@ -24,53 +24,43 @@ public class TencentShare {
     // TODO webUrl 不能为null且不能为空字符串
     public static void onShare(final Context context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type) {
 
-        if (TextUtils.isEmpty(titleStr) || TextUtils.isEmpty(webUrl)) {
-            Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题、网址不能为空)", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        switch (type) {
 
-        //初始化一个WXWebpageObject，填写url
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = webUrl;
+            case QQ:
 
-        //用 WXWebpageObject 对象初始化一个 WXMediaMessage 对象
-        final WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = titleStr;
-        msg.description = description;
-
-        File file = new File(imgUrl);
-
-        if (file.exists()) {
-
-            try {
-                Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl);
-                msg.thumbData = bitmap2Bytes(thumbBmp, 32);
-                thumbBmp.recycle();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            //构造一个Req
-            SendMessageToWX.Req req = new SendMessageToWX.Req();
-            req.transaction = buildTransaction("webpage");
-            req.message = msg;
+                break;
 
 
-            req.scene = type.getScene();
+            case QZONE:
+                break;
 
-            //调用api接口，发送数据到微信
-            IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat());
-            wxapi.sendReq(req);
 
-        } else {
+            case WECHAT_FRIEND:
+            case WECHAT_CIRCLES:
+            case WECHAT_COLLECTION:
 
-            new WechatShareAsync(new WechatShareListener() {
-                @Override
-                public void thumbBmp(Bitmap bitmap) {
+                if (TextUtils.isEmpty(titleStr) || TextUtils.isEmpty(webUrl)) {
+                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题、网址不能为空)", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //初始化一个WXWebpageObject，填写url
+                WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = webUrl;
+
+                //用 WXWebpageObject 对象初始化一个 WXMediaMessage 对象
+                final WXMediaMessage msg = new WXMediaMessage(webpage);
+                msg.title = titleStr;
+                msg.description = description;
+
+                File file = new File(imgUrl);
+
+                if (file.exists()) {
 
                     try {
-                        msg.thumbData = bitmap2Bytes(bitmap, 32);
-                        bitmap.recycle();
+                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl);
+                        msg.thumbData = bitmap2Bytes(thumbBmp, 32);
+                        thumbBmp.recycle();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -87,8 +77,36 @@ public class TencentShare {
                     IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat());
                     wxapi.sendReq(req);
 
+                } else {
+
+                    new WechatShareAsync(new WechatShareListener() {
+                        @Override
+                        public void thumbBmp(Bitmap bitmap) {
+
+                            try {
+                                msg.thumbData = bitmap2Bytes(bitmap, 32);
+                                bitmap.recycle();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            //构造一个Req
+                            SendMessageToWX.Req req = new SendMessageToWX.Req();
+                            req.transaction = buildTransaction("webpage");
+                            req.message = msg;
+
+
+                            req.scene = type.getScene();
+
+                            //调用api接口，发送数据到微信
+                            IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat());
+                            wxapi.sendReq(req);
+
+                        }
+                    }).execute(imgUrl);
                 }
-            }).execute(imgUrl);
+
+                break;
         }
 
     }
@@ -116,4 +134,5 @@ public class TencentShare {
         }
         return output.toByteArray();
     }
+
 }
