@@ -24,14 +24,31 @@ public class TencentShare {
     // TODO webUrl 不能为null且不能为空字符串
     public static void onShare(final Context context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type) {
 
+        String urlStartHttp = "http:" + File.separator + File.separator;
+        String urlStartHttps = "https:" + File.separator + File.separator;
+
+        if (TextUtils.isEmpty(titleStr)) {
+            Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题不能为空)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         switch (type) {
 
             case QQ:
-
+                if (TextUtils.isEmpty(webUrl) || (!webUrl.startsWith(urlStartHttp) && !webUrl.startsWith(urlStartHttps))) {
+                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(网址格式不正确)", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 break;
 
 
             case QZONE:
+                if (TextUtils.isEmpty(webUrl) || (!webUrl.startsWith(urlStartHttp) && !webUrl.startsWith(urlStartHttps))) {
+                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(网址格式不正确)", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 break;
 
 
@@ -39,8 +56,8 @@ public class TencentShare {
             case WECHAT_CIRCLES:
             case WECHAT_COLLECTION:
 
-                if (TextUtils.isEmpty(titleStr) || TextUtils.isEmpty(webUrl)) {
-                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题、网址不能为空)", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(webUrl)) {
+                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(网址不能为空)", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
