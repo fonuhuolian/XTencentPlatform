@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
@@ -23,7 +22,7 @@ public class TencentShare {
     // TODO 微信分享
     // TODO titleStr 不能为null且不能为空字符串
     // TODO webUrl 不能为null且不能为空字符串
-    public static void shareTitle(final Context context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type) {
+    public static void onShare(final Context context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type) {
 
         if (TextUtils.isEmpty(titleStr) || TextUtils.isEmpty(webUrl)) {
             Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题、网址不能为空)", Toast.LENGTH_SHORT).show();
@@ -42,10 +41,11 @@ public class TencentShare {
         File file = new File(imgUrl);
 
         if (file.exists()) {
-            Log.e("dddd", "请求本地");
+
             try {
                 Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl);
                 msg.thumbData = bitmap2Bytes(thumbBmp, 32);
+                thumbBmp.recycle();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -63,16 +63,16 @@ public class TencentShare {
             wxapi.sendReq(req);
 
         } else {
-            Log.e("dddd", "请求网络");
+
             new WechatShareAsync(new WechatShareListener() {
                 @Override
                 public void thumbBmp(Bitmap bitmap) {
 
                     try {
                         msg.thumbData = bitmap2Bytes(bitmap, 32);
+                        bitmap.recycle();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Log.e("dd", "失败");
                     }
 
                     //构造一个Req
@@ -90,7 +90,7 @@ public class TencentShare {
                 }
             }).execute(imgUrl);
         }
-        
+
     }
 
 
