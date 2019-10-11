@@ -36,7 +36,7 @@ public class TencentShare {
         //用 WXWebpageObject 对象初始化一个 WXMediaMessage 对象
         final WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = titleStr;
-        msg.description = "";
+        msg.description = description;
 
         File file = new File(imgUrl);
 
