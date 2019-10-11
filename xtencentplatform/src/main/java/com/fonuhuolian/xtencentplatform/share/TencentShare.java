@@ -1,20 +1,26 @@
 package com.fonuhuolian.xtencentplatform.share;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
+import com.tencent.connect.share.QQShare;
+import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.tauth.Tencent;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class TencentShare {
 
@@ -22,7 +28,7 @@ public class TencentShare {
     // TODO 微信分享
     // TODO titleStr 不能为null且不能为空字符串
     // TODO webUrl 不能为null且不能为空字符串
-    public static void onShare(final Context context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type) {
+    public static void onShare(final Activity context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
 
         String urlStartHttp = "http:" + File.separator + File.separator;
         String urlStartHttps = "https:" + File.separator + File.separator;
@@ -39,6 +45,23 @@ public class TencentShare {
                     Toast.makeText(TencentPlatform.getmContext(), "分享失败(网址格式不正确)", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                Tencent mTencent = Tencent.createInstance(TencentPlatform.getAppIdQq(), context);
+
+                final Bundle qqParams = new Bundle();
+                qqParams.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+                // 这条分享消息被好友点击后跳转URL（必填）
+                qqParams.putString(QQShare.SHARE_TO_QQ_TARGET_URL, webUrl);
+                // 分享的标题，最长30个字符（必填）
+                qqParams.putString(QQShare.SHARE_TO_QQ_TITLE, titleStr);
+                // 摘要 （选填）
+                qqParams.putString(QQShare.SHARE_TO_QQ_SUMMARY, description);
+                // 分享的图片 （选填）
+                if (!TextUtils.isEmpty(imgUrl)) {
+                    qqParams.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, imgUrl);
+                }
+
+                mTencent.shareToQQ(context, qqParams, listener);
                 break;
 
 
@@ -47,8 +70,28 @@ public class TencentShare {
                     Toast.makeText(TencentPlatform.getmContext(), "分享失败(网址格式不正确)", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (TextUtils.isEmpty(imgUrl) || (!imgUrl.startsWith(urlStartHttp) && !imgUrl.startsWith(urlStartHttps))) {
+                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(图片格式不正确)", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                Tencent mTencents = Tencent.createInstance(TencentPlatform.getAppIdQq(), context);
 
+                final Bundle qzoneParams = new Bundle();
+
+                qzoneParams.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
+                // 分享的标题，最长30个字符（必填）
+                qzoneParams.putString(QzoneShare.SHARE_TO_QQ_TITLE, titleStr);
+                // 这条分享消息被好友点击后跳转URL（必填）
+                qzoneParams.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, webUrl);
+                // 摘要 （选填）
+                qzoneParams.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, description);
+                // 分享的图片
+                ArrayList<String> arraylist = new ArrayList<>();
+                Collections.addAll(arraylist, imgUrl);
+                qzoneParams.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, arraylist);
+
+                mTencents.shareToQzone(context, qzoneParams, listener);
                 break;
 
 
@@ -122,7 +165,6 @@ public class TencentShare {
                         }
                     }).execute(imgUrl);
                 }
-
                 break;
         }
 
