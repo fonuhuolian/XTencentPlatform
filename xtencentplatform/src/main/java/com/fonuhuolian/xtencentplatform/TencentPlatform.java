@@ -40,6 +40,9 @@ public class TencentPlatform {
         return APP_SECRET_WECHAT;
     }
 
+    public static Application getmContext() {
+        return mContext;
+    }
 
     // TODO 图文分享
     // QQ 分享 必填 链接、title 且不能为空
