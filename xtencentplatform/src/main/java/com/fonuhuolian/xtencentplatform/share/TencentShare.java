@@ -113,7 +113,7 @@ public class TencentShare {
                 msg.title = titleStr;
                 msg.description = description;
 
-                File file = new File(imgUrl);
+                File file = new File(TextUtils.isEmpty(imgUrl) ? "" : imgUrl);
 
                 if (file.exists()) {
 
