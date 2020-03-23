@@ -22,7 +22,7 @@ implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.5'
 ```
 implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.5'){
         exclude group: 'com.tencent.mm.opensdk'
-    }
+}
 ```
 
 > 混淆
