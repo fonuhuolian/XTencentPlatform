@@ -134,7 +134,8 @@ public class TencentShare {
                     req.scene = type.getScene();
 
                     //调用api接口，发送数据到微信
-                    IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat());
+                    IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat(), true);
+                    wxapi.registerApp(TencentPlatform.getAppIdWechat());
                     wxapi.sendReq(req);
 
                 } else {
@@ -159,7 +160,8 @@ public class TencentShare {
                             req.scene = type.getScene();
 
                             //调用api接口，发送数据到微信
-                            IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat());
+                            IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat(), true);
+                            wxapi.registerApp(TencentPlatform.getAppIdWechat());
                             wxapi.sendReq(req);
 
                         }

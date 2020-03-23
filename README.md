@@ -16,7 +16,13 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.3.5'
+implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.5'
+```
+`如遇jar包冲突(比如集成过微信支付) `
+```
+implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.5'){
+        exclude group: 'com.tencent.mm.opensdk'
+    }
 ```
 
 > 混淆
@@ -125,7 +131,8 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         // 由第三方App个性化展示登录、分享结果
         setContentView(R.layout.activity_wxpay_entry);
 
-        iwxapi = WXAPIFactory.createWXAPI(this, APP_ID);
+        iwxapi = WXAPIFactory.createWXAPI(this, APP_ID,true);
+        iwxapi.registerApp(APP_ID);
         iwxapi.handleIntent(getIntent(), this);
     }
 
@@ -191,4 +198,15 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     android:exported="true"
     android:launchMode="singleTask"
     android:screenOrientation="portrait" />
+```
+4.登录
+```
+loginWechat.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        // 登录
+        TencentLogin.onWechatLogin(mActivity);
+    }
+
+});
 ```

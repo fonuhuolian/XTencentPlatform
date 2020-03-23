@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/GitHub-XTencentPlatform.iml" filepath="$PROJECT_DIR$/GitHub-XTencentPlatform.iml" group="XTencentPlatform" />
       <module fileurl="file://$PROJECT_DIR$/XTencentPlatform.iml" filepath="$PROJECT_DIR$/XTencentPlatform.iml" />
-      <module fileurl="file://$PROJECT_DIR$/XTencentPlatform.iml" filepath="$PROJECT_DIR$/XTencentPlatform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/XTencentPlatform-app.iml" filepath="$PROJECT_DIR$/app/XTencentPlatform-app.iml" group="XTencentPlatform/app" />
+      <module fileurl="file://$PROJECT_DIR$/xtencentplatform/XTencentPlatform-xtencentplatform.iml" filepath="$PROJECT_DIR$/xtencentplatform/XTencentPlatform-xtencentplatform.iml" group="XTencentPlatform/xtencentplatform" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xtencentplatform/xtencentplatform.iml" filepath="$PROJECT_DIR$/xtencentplatform/xtencentplatform.iml" />
       <module fileurl="file://$PROJECT_DIR$/xtencentplatform/xtencentplatform.iml" filepath="$PROJECT_DIR$/xtencentplatform/xtencentplatform.iml" />
     </modules>
   </component>
