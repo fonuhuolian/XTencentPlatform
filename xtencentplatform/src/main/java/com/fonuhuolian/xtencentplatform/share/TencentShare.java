@@ -25,10 +25,8 @@ import java.util.Collections;
 public class TencentShare {
 
 
-    // TODO 微信分享
-    // TODO titleStr 不能为null且不能为空字符串
-    // TODO webUrl 不能为null且不能为空字符串
-    public static void onShare(final Activity context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
+    // TODO 媒体消息分享(用的最多的方式)
+    public static void onMediaMessageShare(final Activity context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
 
         String urlStartHttp = "http:" + File.separator + File.separator;
         String urlStartHttps = "https:" + File.separator + File.separator;
@@ -176,7 +174,7 @@ public class TencentShare {
     /**
      * 构建一个唯一标志
      */
-    protected static String buildTransaction(String type) {
+    private static String buildTransaction(String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
 
     }
@@ -184,7 +182,7 @@ public class TencentShare {
     /**
      * Bitmap转换成byte[]并且进行压缩,压缩到不大于maxkb
      */
-    protected static byte[] bitmap2Bytes(Bitmap bitmap, int maxkb) {
+    private static byte[] bitmap2Bytes(Bitmap bitmap, int maxkb) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
         int options = 100;
