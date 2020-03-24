@@ -16,11 +16,11 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.6.7'
+implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.7'
 ```
 `如遇jar包冲突(比如集成过微信支付) `
 ```
-implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.6.7'){
+implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.7'){
         exclude group: 'com.tencent.mm.opensdk'
 }
 ```
@@ -213,4 +213,6 @@ loginWechat.setOnClickListener(new View.OnClickListener() {
 - 媒体消息分享
 ```
 TencentShare.onMediaMessageShare(context, titleStr, description, webUrl, imgUrl, type, listener)
+TencentShare.onVideoShare(context, titleStr, description, videoUrl, imgUrl, type, listener)
+TencentShare.onImageShare(context, imgUrl, type, listener)
 ```

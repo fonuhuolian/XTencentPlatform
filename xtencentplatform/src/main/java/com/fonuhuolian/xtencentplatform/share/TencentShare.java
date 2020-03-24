@@ -9,7 +9,10 @@ import android.widget.Toast;
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
 import com.fonuhuolian.xtencentplatform.util.ShareThumUtil;
 import com.tencent.connect.share.QQShare;
+import com.tencent.connect.share.QzonePublish;
 import com.tencent.connect.share.QzoneShare;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -26,8 +29,10 @@ import java.util.Collections;
 
 public class TencentShare {
 
-
-    private static final int THUMB_SIZE = 150;
+    // TODO 是否是微信分享的回调
+    public static boolean isWechatShareCallBack(BaseResp baseResp) {
+        return baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX;
+    }
 
     // TODO 媒体消息分享(用的最多的方式)
     // imgUrl QQ空间必须用网络图片
@@ -74,7 +79,7 @@ public class TencentShare {
                     return;
                 }
                 if (TextUtils.isEmpty(imgUrl) || (!imgUrl.startsWith(urlStartHttp) && !imgUrl.startsWith(urlStartHttps))) {
-                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(图片格式不正确)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(需要网络图片)", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -179,21 +184,14 @@ public class TencentShare {
     // TODO 分享视频
     public static void onVideoShare(final Activity context, String titleStr, String description, String videoUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
 
-        String urlStartHttp = "http:" + File.separator + File.separator;
-        String urlStartHttps = "https:" + File.separator + File.separator;
-
-//        if (TextUtils.isEmpty(titleStr)) {
-//            Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题不能为空)", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
         switch (type) {
 
             case QQ:
+                onMediaMessageShare(context, titleStr, description, videoUrl, imgUrl, ShareType.QQ, listener);
                 break;
             case QZONE:
+                onMediaMessageShare(context, titleStr, description, videoUrl, imgUrl, ShareType.QZONE, listener);
                 break;
-
 
             case WECHAT_FRIEND:
             case WECHAT_CIRCLES:
@@ -271,30 +269,45 @@ public class TencentShare {
     }
 
 
-    // TODO 分享视频
+    // TODO 分享图片
     public static void onImageShare(final Activity context, final String imgUrl, final ShareType type, IQQShareListener listener) {
 
-        String urlStartHttp = "http:" + File.separator + File.separator;
-        String urlStartHttps = "https:" + File.separator + File.separator;
-
         if (TextUtils.isEmpty(imgUrl)) {
-            Toast.makeText(TencentPlatform.getmContext(), "分享失败(图片不能为空)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TencentPlatform.getmContext(), "分享失败(图片地址不能为空)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        File file = new File(TextUtils.isEmpty(imgUrl) ? "" : imgUrl);
+
+        if (!file.exists() && type == ShareType.QQ) {
+            Toast.makeText(TencentPlatform.getmContext(), "分享失败(本地图片不存在)", Toast.LENGTH_SHORT).show();
             return;
         }
 
         switch (type) {
 
             case QQ:
+                Tencent mTencent = Tencent.createInstance(TencentPlatform.getAppIdQq(), context);
+                Bundle params = new Bundle();
+                params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
+                // 必须是本地图片
+                params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, imgUrl);
+                mTencent.shareToQQ(context, params, listener);
                 break;
             case QZONE:
+                Tencent mTencents = Tencent.createInstance(TencentPlatform.getAppIdQq(), context);
+                Bundle qZoneParams = new Bundle();
+                qZoneParams.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzonePublish.PUBLISH_TO_QZONE_TYPE_PUBLISHMOOD);
+                ArrayList<String> arraylist = new ArrayList<>();
+                // 只能加载本地图片，非本地可以打开说说，不报错
+                Collections.addAll(arraylist, imgUrl);
+                qZoneParams.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, arraylist);
+                mTencents.publishToQzone(context, qZoneParams, listener);
                 break;
-
 
             case WECHAT_FRIEND:
             case WECHAT_CIRCLES:
             case WECHAT_COLLECTION:
-
-                File file = new File(TextUtils.isEmpty(imgUrl) ? "" : imgUrl);
 
                 if (file.exists()) {
 
@@ -370,7 +383,7 @@ public class TencentShare {
     }
 
     private static Bitmap getBitmapFromFile(String filePath) {
-        return ShareThumUtil.extractThumbNail(filePath, 300, 300, false);
+        return ShareThumUtil.extractThumbNail(filePath, 1000, 1000, false);
     }
 
     /**
