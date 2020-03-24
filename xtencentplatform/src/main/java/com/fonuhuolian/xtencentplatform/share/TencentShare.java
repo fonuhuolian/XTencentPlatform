@@ -12,6 +12,7 @@ import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXVideoObject;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -26,6 +27,7 @@ public class TencentShare {
 
 
     // TODO 媒体消息分享(用的最多的方式)
+    // imgUrl QQ空间必须用网络图片
     public static void onMediaMessageShare(final Activity context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
 
         String urlStartHttp = "http:" + File.separator + File.separator;
@@ -155,6 +157,101 @@ public class TencentShare {
                             req.message = msg;
 
 
+                            req.scene = type.getScene();
+
+                            //调用api接口，发送数据到微信
+                            IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat(), true);
+                            wxapi.registerApp(TencentPlatform.getAppIdWechat());
+                            wxapi.sendReq(req);
+
+                        }
+                    }).execute(imgUrl);
+                }
+                break;
+        }
+
+    }
+
+
+    // TODO 分享视频
+    public static void onVideoShare(final Activity context, String titleStr, String description, String videoUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
+
+        String urlStartHttp = "http:" + File.separator + File.separator;
+        String urlStartHttps = "https:" + File.separator + File.separator;
+
+//        if (TextUtils.isEmpty(titleStr)) {
+//            Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题不能为空)", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        switch (type) {
+
+            case QQ:
+                break;
+            case QZONE:
+                break;
+
+
+            case WECHAT_FRIEND:
+            case WECHAT_CIRCLES:
+            case WECHAT_COLLECTION:
+
+                if (TextUtils.isEmpty(videoUrl)) {
+                    Toast.makeText(TencentPlatform.getmContext(), "分享失败(视频地址不能为空)", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                //初始化一个WXVideoObject，填写url
+                WXVideoObject video = new WXVideoObject();
+                // 不能为空 掉不起来微信
+                video.videoUrl = videoUrl;
+
+                //用 WXVideoObject 对象初始化一个 WXMediaMessage 对象
+                final WXMediaMessage msg = new WXMediaMessage(video);
+                msg.title = titleStr;
+                msg.description = description;
+
+                File file = new File(TextUtils.isEmpty(imgUrl) ? "" : imgUrl);
+
+                if (file.exists()) {
+
+                    try {
+                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl);
+                        msg.thumbData = bitmap2Bytes(thumbBmp, 32);
+                        thumbBmp.recycle();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    //构造一个Req
+                    SendMessageToWX.Req req = new SendMessageToWX.Req();
+                    req.transaction = buildTransaction("video");
+                    req.message = msg;
+                    req.scene = type.getScene();
+
+                    //调用api接口，发送数据到微信
+                    IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat(), true);
+                    wxapi.registerApp(TencentPlatform.getAppIdWechat());
+                    wxapi.sendReq(req);
+
+                } else {
+
+                    new WechatShareAsync(new WechatShareListener() {
+                        @Override
+                        public void thumbBmp(Bitmap bitmap) {
+
+                            try {
+                                msg.thumbData = bitmap2Bytes(bitmap, 32);
+                                bitmap.recycle();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            //构造一个Req
+                            SendMessageToWX.Req req = new SendMessageToWX.Req();
+                            req.transaction = buildTransaction("video");
+                            req.message = msg;
                             req.scene = type.getScene();
 
                             //调用api接口，发送数据到微信
