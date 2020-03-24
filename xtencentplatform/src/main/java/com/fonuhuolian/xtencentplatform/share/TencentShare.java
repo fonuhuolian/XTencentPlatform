@@ -26,6 +26,8 @@ import java.util.Collections;
 public class TencentShare {
 
 
+    private static final int THUMB_SIZE = 150;
+
     // TODO 媒体消息分享(用的最多的方式)
     // imgUrl QQ空间必须用网络图片
     public static void onMediaMessageShare(final Activity context, String titleStr, String description, String webUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
@@ -118,7 +120,9 @@ public class TencentShare {
                 if (file.exists()) {
 
                     try {
-                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inPreferredConfig = Bitmap.Config.RGB_565;
+                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl, options);
                         msg.thumbData = bitmap2Bytes(thumbBmp, 32);
                         thumbBmp.recycle();
                     } catch (Exception e) {
@@ -217,7 +221,9 @@ public class TencentShare {
                 if (file.exists()) {
 
                     try {
-                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inPreferredConfig = Bitmap.Config.RGB_565;
+                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl, options);
                         msg.thumbData = bitmap2Bytes(thumbBmp, 32);
                         thumbBmp.recycle();
                     } catch (Exception e) {
