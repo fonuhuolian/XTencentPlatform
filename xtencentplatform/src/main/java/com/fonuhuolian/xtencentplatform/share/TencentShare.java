@@ -272,15 +272,15 @@ public class TencentShare {
 
 
     // TODO 分享视频
-    public static void onImageShare(final Activity context, String titleStr, String description, String videoUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
+    public static void onImageShare(final Activity context, final String imgUrl, final ShareType type, IQQShareListener listener) {
 
         String urlStartHttp = "http:" + File.separator + File.separator;
         String urlStartHttps = "https:" + File.separator + File.separator;
 
-//        if (TextUtils.isEmpty(titleStr)) {
-//            Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题不能为空)", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (TextUtils.isEmpty(imgUrl)) {
+            Toast.makeText(TencentPlatform.getmContext(), "分享失败(图片不能为空)", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         switch (type) {
 
@@ -310,7 +310,7 @@ public class TencentShare {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    
+
 
                     //构造一个Req
                     SendMessageToWX.Req req = new SendMessageToWX.Req();
