@@ -2,12 +2,12 @@ package com.fonuhuolian.xtencentplatform.share;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
+import com.fonuhuolian.xtencentplatform.util.ShareThumUtil;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -370,11 +370,7 @@ public class TencentShare {
     }
 
     private static Bitmap getBitmapFromFile(String filePath) {
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        options.inSampleSize = 2;
-        return BitmapFactory.decodeFile(filePath, options);
+        return ShareThumUtil.extractThumbNail(filePath, 300, 300, false);
     }
 
     /**
