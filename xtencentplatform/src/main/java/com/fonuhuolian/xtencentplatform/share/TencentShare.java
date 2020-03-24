@@ -11,6 +11,7 @@ import com.fonuhuolian.xtencentplatform.TencentPlatform;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXVideoObject;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
@@ -120,9 +121,7 @@ public class TencentShare {
                 if (file.exists()) {
 
                     try {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inPreferredConfig = Bitmap.Config.RGB_565;
-                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl, options);
+                        Bitmap thumbBmp = getBitmapFromFile(imgUrl);
                         msg.thumbData = bitmap2Bytes(thumbBmp, 32);
                         thumbBmp.recycle();
                     } catch (Exception e) {
@@ -221,9 +220,7 @@ public class TencentShare {
                 if (file.exists()) {
 
                     try {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inPreferredConfig = Bitmap.Config.RGB_565;
-                        Bitmap thumbBmp = BitmapFactory.decodeFile(imgUrl, options);
+                        Bitmap thumbBmp = getBitmapFromFile(imgUrl);
                         msg.thumbData = bitmap2Bytes(thumbBmp, 32);
                         thumbBmp.recycle();
                     } catch (Exception e) {
@@ -274,12 +271,110 @@ public class TencentShare {
     }
 
 
+    // TODO 分享视频
+    public static void onImageShare(final Activity context, String titleStr, String description, String videoUrl, final String imgUrl, final ShareType type, IQQShareListener listener) {
+
+        String urlStartHttp = "http:" + File.separator + File.separator;
+        String urlStartHttps = "https:" + File.separator + File.separator;
+
+//        if (TextUtils.isEmpty(titleStr)) {
+//            Toast.makeText(TencentPlatform.getmContext(), "分享失败(标题不能为空)", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        switch (type) {
+
+            case QQ:
+                break;
+            case QZONE:
+                break;
+
+
+            case WECHAT_FRIEND:
+            case WECHAT_CIRCLES:
+            case WECHAT_COLLECTION:
+
+                File file = new File(TextUtils.isEmpty(imgUrl) ? "" : imgUrl);
+
+                if (file.exists()) {
+
+                    Bitmap thumbBmp = getBitmapFromFile(imgUrl);
+                    //初始化 WXImageObject 和 WXMediaMessage 对象
+                    WXImageObject imgObj = new WXImageObject(thumbBmp);
+                    WXMediaMessage msg = new WXMediaMessage();
+                    msg.mediaObject = imgObj;
+
+                    try {
+                        msg.thumbData = bitmap2Bytes(thumbBmp, 32);
+                        thumbBmp.recycle();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
+
+                    //构造一个Req
+                    SendMessageToWX.Req req = new SendMessageToWX.Req();
+                    req.transaction = buildTransaction("img");
+                    req.message = msg;
+                    req.scene = type.getScene();
+
+                    //调用api接口，发送数据到微信
+                    IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat(), true);
+                    wxapi.registerApp(TencentPlatform.getAppIdWechat());
+                    wxapi.sendReq(req);
+
+                } else {
+
+                    new WechatShareAsync(new WechatShareListener() {
+                        @Override
+                        public void thumbBmp(Bitmap bitmap) {
+
+                            //初始化 WXImageObject 和 WXMediaMessage 对象
+                            WXImageObject imgObj = new WXImageObject(bitmap);
+                            WXMediaMessage msg = new WXMediaMessage();
+                            msg.mediaObject = imgObj;
+
+                            try {
+                                msg.thumbData = bitmap2Bytes(bitmap, 32);
+                                bitmap.recycle();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            //构造一个Req
+                            SendMessageToWX.Req req = new SendMessageToWX.Req();
+                            req.transaction = buildTransaction("img");
+                            req.message = msg;
+                            req.scene = type.getScene();
+
+                            //调用api接口，发送数据到微信
+                            IWXAPI wxapi = WXAPIFactory.createWXAPI(context, TencentPlatform.getAppIdWechat(), true);
+                            wxapi.registerApp(TencentPlatform.getAppIdWechat());
+                            wxapi.sendReq(req);
+
+                        }
+                    }).execute(imgUrl);
+                }
+                break;
+        }
+
+    }
+
+
     /**
      * 构建一个唯一标志
      */
     private static String buildTransaction(String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
 
+    }
+
+    private static Bitmap getBitmapFromFile(String filePath) {
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inSampleSize = 2;
+        return BitmapFactory.decodeFile(filePath, options);
     }
 
     /**
