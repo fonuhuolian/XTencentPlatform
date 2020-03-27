@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
-import com.fonuhuolian.xtencentplatform.login.QQLoginListener;
 import com.fonuhuolian.xtencentplatform.util.ShareThumUtil;
 import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
@@ -405,7 +404,7 @@ public class TencentShare {
     }
 
     // TODO QQ在onActivityResult调用此方法
-    public static void onQQActivityResult(int requestCode, int resultCode, Intent data, QQLoginListener listener) {
+    public static void onQQActivityResult(int requestCode, int resultCode, Intent data, IQQShareListener listener) {
         if (requestCode == Constants.REQUEST_QQ_SHARE || requestCode == Constants.REQUEST_QZONE_SHARE) {
             Tencent.onActivityResultData(requestCode, resultCode, data, listener);
         }

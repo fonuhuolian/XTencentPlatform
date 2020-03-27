@@ -16,11 +16,11 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.8'
+implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.9'
 ```
 `如遇jar包冲突(比如集成过微信支付) `
 ```
-implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.8'){
+implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.9'){
         exclude group: 'com.tencent.mm.opensdk'
 }
 ```
@@ -215,4 +215,12 @@ loginWechat.setOnClickListener(new View.OnClickListener() {
 TencentShare.onMediaMessageShare(context, titleStr, description, webUrl, imgUrl, type, listener)
 TencentShare.onVideoShare(context, titleStr, description, videoUrl, imgUrl, type, listener)
 TencentShare.onImageShare(context, imgUrl, type, listener)
+```
+```
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    // 回调QQ分享
+    TencentShare.onQQActivityResult(requestCode, resultCode, data, qqShareListener);
+    super.onActivityResult(requestCode, resultCode, data);
+}
 ```
