@@ -1,13 +1,16 @@
 package com.fonuhuolian.xtencentplatform.share;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fonuhuolian.xtencentplatform.TencentPlatform;
+import com.fonuhuolian.xtencentplatform.login.QQLoginListener;
 import com.fonuhuolian.xtencentplatform.util.ShareThumUtil;
+import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzonePublish;
 import com.tencent.connect.share.QzoneShare;
@@ -399,6 +402,13 @@ public class TencentShare {
             options -= 10;
         }
         return output.toByteArray();
+    }
+
+    // TODO QQ在onActivityResult调用此方法
+    public static void onQQActivityResult(int requestCode, int resultCode, Intent data, QQLoginListener listener) {
+        if (requestCode == Constants.REQUEST_QQ_SHARE || requestCode == Constants.REQUEST_QZONE_SHARE) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, listener);
+        }
     }
 
 }

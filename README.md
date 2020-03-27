@@ -16,11 +16,11 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.7'
+implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.8'
 ```
 `如遇jar包冲突(比如集成过微信支付) `
 ```
-implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.7'){
+implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.8'){
         exclude group: 'com.tencent.mm.opensdk'
 }
 ```
