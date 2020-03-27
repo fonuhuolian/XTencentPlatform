@@ -129,7 +129,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 由第三方App个性化展示登录、分享结果
-        setContentView(R.layout.activity_wxpay_entry);
+        setContentView(R.layout.activity_wx_entry);
 
         iwxapi = WXAPIFactory.createWXAPI(this, APP_ID,true);
         iwxapi.registerApp(APP_ID);
