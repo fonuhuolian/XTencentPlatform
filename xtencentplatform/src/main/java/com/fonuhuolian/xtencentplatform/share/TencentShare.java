@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -26,8 +29,13 @@ import com.tencent.tauth.Tencent;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class TencentShare {
 
@@ -293,7 +301,7 @@ public class TencentShare {
                 Bundle params = new Bundle();
                 params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
                 // 必须是本地图片
-                params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, imgUrl);
+                params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, copyFile(context, imgUrl));
                 mTencent.shareToQQ(context, params, listener);
                 break;
             case QZONE:
@@ -302,7 +310,7 @@ public class TencentShare {
                 qZoneParams.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzonePublish.PUBLISH_TO_QZONE_TYPE_PUBLISHMOOD);
                 ArrayList<String> arraylist = new ArrayList<>();
                 // 只能加载本地图片，非本地可以打开说说，不报错
-                Collections.addAll(arraylist, imgUrl);
+                Collections.addAll(arraylist, copyFile(context, imgUrl));
                 qZoneParams.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, arraylist);
                 mTencents.publishToQzone(context, qZoneParams, listener);
                 break;
@@ -375,6 +383,46 @@ public class TencentShare {
 
     }
 
+    private static String copyFile(Activity context, String filePath) {
+
+        String cachePath = context.getCacheDir().getAbsolutePath();
+
+        if (filePath.startsWith(cachePath)) {
+
+            File file = new File(filePath);
+            File copyFile = new File(context.getExternalCacheDir() + "/" + System.currentTimeMillis() + ".jpg");
+            FileOutputStream fos = null;
+            InputStream ins = null;
+            try {
+                fos = new FileOutputStream(copyFile);
+                ins = new FileInputStream(file);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = ins.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.flush();
+
+                return copyFile.getAbsolutePath();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return filePath;
+            } finally {
+                try {
+                    if (fos != null)
+                        fos.close();
+
+                    if (ins != null)
+                        ins.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            return filePath;
+        }
+    }
 
     /**
      * 构建一个唯一标志
@@ -410,4 +458,14 @@ public class TencentShare {
         }
     }
 
+    // TODO 解决QQ在fragment不回调(在Activity的onActivityResult调用此方法)
+    public static void onQQSendFragmentActivityResult(AppCompatActivity activity, int requestCode, int resultCode, Intent data) {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        List<Fragment> fragments = fm.getFragments();
+        if (fragments != null && fragments.size() > 0) {
+            for (Fragment f : fragments) {
+                f.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    }
 }

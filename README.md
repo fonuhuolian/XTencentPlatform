@@ -16,11 +16,11 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XTencentPlatform:1.1.9'
+implementation 'com.github.fonuhuolian:XTencentPlatform:1.2.0'
 ```
 `如遇jar包冲突(比如集成过微信支付) `
 ```
-implementation ('com.github.fonuhuolian:XTencentPlatform:1.1.9'){
+implementation ('com.github.fonuhuolian:XTencentPlatform:1.2.0'){
         exclude group: 'com.tencent.mm.opensdk'
 }
 ```
@@ -219,8 +219,12 @@ TencentShare.onImageShare(context, imgUrl, type, listener)
 ```
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    // 回调QQ分享
-    TencentShare.onQQActivityResult(requestCode, resultCode, data, qqShareListener);
+    // 回调QQ分享的监听
+    TencentShare.onActivityResult(requestCode, resultCode, data, qqListener);
     super.onActivityResult(requestCode, resultCode, data);
 }
+```
+```
+// TODO 解决QQ在fragment不回调(在Activity的onActivityResult调用此方法)
+TencentShare.onQQSendFragmentActivityResult(activity, requestCode, resultCode, data);
 ```
