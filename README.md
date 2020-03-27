@@ -210,11 +210,14 @@ loginWechat.setOnClickListener(new View.OnClickListener() {
 
 });
 ```
-- 媒体消息分享
+- 消息分享
 ```
-TencentShare.onMediaMessageShare(context, titleStr, description, webUrl, imgUrl, type, listener)
-TencentShare.onVideoShare(context, titleStr, description, videoUrl, imgUrl, type, listener)
-TencentShare.onImageShare(context, imgUrl, type, listener)
+// 媒体消息分享
+TencentShare.onMediaMessageShare(context, titleStr, description, webUrl, imgUrl, type, listener);
+// 视频分享
+TencentShare.onVideoShare(context, titleStr, description, videoUrl, imgUrl, type, listener);
+// 图片分享
+TencentShare.onImageShare(context, imgUrl, type, listener);
 ```
 ```
 @Override
